@@ -1,0 +1,377 @@
+﻿@{
+    ViewBag.Title = "UserList";
+}
+
+<style>
+    .layui-form-label {
+        width: 60px;
+    }
+    .layui-input-block {
+        margin-left:90px;
+    }
+</style>
+
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:70px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="UserName" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="RealName" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" name="EMail" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block" style="width:150px;">
+                <select name="RoleId">
+                    <option value="0">选择角色</option>
+                    @{
+                        foreach (XAdmin.Model.Entity.RoleInfo info in ViewBag.RoleList)
+                        {
+                            <option value="@info.ID">@info.RoleName</option>
+                        }
+                    }
+                </select>
+
+            </div>
+            
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn" lay-submit lay-filter="user-search" style="display:block; margin-bottom:7px;">搜索</button>
+        </div>
+
+        <br />
+        <div class="layui-inline">
+            <label class="layui-form-label">所在地区</label>
+            <div class="layui-input-block">
+                <input type="text" name="Area" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="Mobile" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block" style="width:182px;">
+                <select name="Gender">
+                    <option value="0">不限</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block" style="width:150px;">
+                <select name="Status">
+                    <option value="2">不限</option>
+                    <option value="1">正常</option>
+                    <option value="0">已禁用</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<table class="layui-hide" id="demo" lay-filter="demo"></table>
+
+@*状态模板*@
+<script type="text/html" id="StatusTpl">
+    <input type="checkbox" name="Status" value="{{d.ID}}" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusDemo" {{ d.Status == 1 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="Add">新增用户</button>
+        <button class="layui-btn layui-btn-sm" lay-event="DeleteUsers">批量删除</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function () {
+        var $ = layui.$;
+        var form = layui.form;
+        var table = layui.table;
+        //监听搜索
+        form.on('submit(user-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('demo', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                dataType: 'json',
+                where: { 'JsonStr': JSON.stringify(field) }
+            });
+        });
+        table.render({
+            elem: '#demo'
+            , height: 'auto'
+            , url: '@Html.RootPath()/RightsManagement/GetUserPageList' //数据接口
+            , toolbar: '#toolbarDemo'
+            //, page: true //开启分页
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                , groups: 8 //显示 8 个连续页码
+                //, first: true //不显示首页
+                //, last: true //不显示尾页
+                , prev: '上一页'
+                , next: '下一页'
+            }
+            //, where: { pxid: data.value } //扩展参数,可以传数据到后台
+            , limit: 10 //一页能够显示的最大数目
+            , even: true    //隔行换色
+            , skin: 'line ' //表格风格 line （行边框风格）row （列边框风格）nob （无边框风格）
+            , limits: [10, 20,30,40]  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            , method: 'post'  //提交方式
+            , cols: [[ //表头
+                { type: 'checkbox' }
+                , { field: 'ID', title: '序号', width: 70, style: 'text-align:center;', align: 'center', type: 'numbers' }
+                , { field: 'UserName', title: '用户名', width: 160, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'ID', title: '用户ID', width: 100, style: 'text-align:center;', align: 'center', sort: true }
+                , { field: 'RoleName', title: '角色', width: 110, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'RealName', title: '真实姓名', width: 150, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'GenderStr', title: '性别', width: 100, style: 'text-align:center;', align: 'center', sort: true }
+                , { field: 'EMail', title: 'Email', width: 220, style: 'text-align:left;', align: 'center' }
+                , { field: 'Mobile', title: '手机号码', width: 130, style: 'text-align:left;', align: 'center' }
+                , { field: 'LoginDateStr', title: '最近登录日期', width: 170, align: 'center', sort: true }
+                , { field: 'Status', title: '状态', width: 100, templet: '#StatusTpl', unresize: true }
+                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 120 }
+            ]]
+        });
+
+        //头工具栏事件
+        table.on('toolbar(demo)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+                case 'Add':
+                    layer.open({
+                        type: 2
+                        , title: '添加用户信息'
+                        , shadeClose: true //点击遮罩区域是否关闭页面
+                        , shade: 0.8  //遮罩透明度
+                        , content: '/RightsManagement/UserEdit'
+                        , maxmin: true
+                        , area: ['820px', '600px']
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index]
+                                , submitID = 'LAY-user-front-submit'
+                                , submit = layero.find('iframe').contents().find('#' + submitID);
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                                var field = data.field; //获取提交的字段
+                                //提交 Ajax 成功后，静态更新表格中的数据
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Html.RootPath()/RightsManagement/UpdateUserInfo',
+                                    data: JSON.stringify(field),
+                                    contentType: "Application/json;charset=utf-8",
+                                    success: function (res) {
+                                        if (res.code == "1") {
+                                            layer.tips('操作成功', data.othis);
+                                            table.reload('demo'); //数据刷新
+                                        }
+                                    },
+                                    error: function (data) {
+                                        console.log(data.msg);
+                                    },
+                                });
+                                layer.close(index); //关闭弹层
+                            });
+                            submit.trigger('click');
+                        }
+                    });
+                    break;
+                case 'DeleteUsers':
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择需要删除的用户！', { icon: 7, offset: 't' });
+                    }
+                    else {
+                        var IdStr = "";
+                        for (var i = 0; i < checkData.length; i++) {
+                            IdStr += checkData[i].ID + ",";
+                        }
+                        layer.confirm('确定要删除选中的用户吗？', { icon: 3 }, function (index) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/RightsManagement/DeleteUserInfo',
+                                data: { 'KeyStr': IdStr },
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("已删除！", { icon: 1, offset: 't' });
+                                        table.reload('demo', {});
+                                    }
+                                    else {
+                                        layer.msg("删除失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                        });
+                    }
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('确定要删除此用户吗？', { icon: 3 }, function (index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Html.RootPath()/RightsManagement/DeleteUserInfo',
+                        data: { 'KeyStr': data.ID+',' },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code == "1") {
+                                layer.msg(res.msg, { icon: 1, offset: 't' });
+                                table.reload('demo', {}); //数据刷新
+                                obj.del();
+                            }
+                            else {
+                                layer.msg(res.msg, { icon: 2, offset: 't' });
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data.msg);
+                        },
+                    });
+                    layer.close(index);
+                });
+            }
+            else if (obj.event === 'edit') {
+                layer.open({
+                      type: 2
+                    , title: '修改用户信息'
+                    , shadeClose: true //点击遮罩区域是否关闭页面
+                    , shade: 0.8  //遮罩透明度
+                    //, anim:5
+                    , area: ['820px','600px']
+                    , content: '/RightsManagement/UserEdit?ID=' + data.ID
+                    , maxmin: false
+                    //, success: function (layero, index) {
+                    //    layer.iframeAuto(index);
+                    //    layer.style(index, {
+                    //        // 重新居中的样式
+                    //        top: (layui.$(window).height() - layui.$(layero).height()) / 2
+                    //    })
+                    //}
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'LAY-user-front-submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                            var field = data.field; //获取提交的字段
+                            //获取选择的角色ID
+                            var RoleIdstr = "";
+                            $("select[name='SetRole'] option:selected", iframeWindow.document).each(function () {
+                                RoleIdstr += $(this).val() + ",";
+                            });
+                            //判断添加的权限是否已设置
+                            var RoleIds = RoleIdstr.split(',');
+                            var NoSetRoleId = "";
+                            for (var i = 0; i < RoleIds.length; i++) {
+                                if (RoleIds[i] == "0") {
+                                    NoSetRoleId += (i+1) + ",";
+                                }
+                            }
+                            if (NoSetRoleId != "") {
+                                layer.alert("请为权限" + NoSetRoleId + "设置角色！", { title: '权限' });
+                                return;
+                            }
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/RightsManagement/UpdateUserInfo',
+                                //data: field,
+                                data: { 'JsonStr': JSON.stringify(data.field), 'RoleIds': RoleIdstr },
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg(res.msg, { icon: 1, offset: 't' });
+                                        table.reload('demo', {});
+                                    }
+                                    else {
+                                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                            layer.close(index); //关闭弹层
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+        });
+
+        //监听状态操作
+        form.on('switch(StatusDemo)', function (data) {
+            var status = 0;
+            if (data.elem.checked) {
+                status = 1;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/RightsManagement/ChangeUserStatus',
+                data: { 'ID': this.value, 'Status': status },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.tips('操作成功', data.othis);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+            //layer.tips(this.value + ' ' + this.name + '：' + data.elem.checked, data.othis);
+        });
+
+    });
+</script>

@@ -1,0 +1,22 @@
+{
+  "BasicConfig": {
+    "SiteID": "zhanglc",
+    "SiteName": "XAdmin",
+    "SiteDomain": "",
+    "RootPath": "",
+    "APIHost": "http://localhost:19774/",
+    "UploadPath": "\\Files\\",
+    "UploadFileExt": "*.jpg;*.jpeg;*.gif;*.png;*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.TXT;*.ZIP;*.RAR;*.7z",
+    "HeadPhotoPath": "\\Files\\HeadPhoto\\",
+    "VideoPath": "\\Files\\Video\\"
+  },
+  "MoreConfig": {
+    "SiteKeywords": "",
+    "SiteDescription": "",
+    "SiteCopyright": "",
+    "ICP": "",
+    "StatisticCode": "",
+    "MaxLoginErrCount": "",
+    "LockTime": ""
+  }
+}

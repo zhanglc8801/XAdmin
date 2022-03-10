@@ -1,0 +1,228 @@
+﻿@model XAdmin.Model.Entity.RoleInfo
+@{
+    ViewBag.Title = "RoleEdit";
+}
+<link href="~/LayuiAdmin/layui/css/layui.css" rel="stylesheet" />
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称：</label>
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="layui-input-inline input">
+                    <input type="text" id="RoleName" name="RoleName" lay-verify="required" placeholder="角色名称" autocomplete="off" class="layui-input" value="@Model.RoleName">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="Note" name="Note" placeholder="请输入内容" autocomplete="off" class="layui-input" style="width:99%" value="@Model.Note">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:30px; padding-top:0px;">
+                    <label class="layui-form-label" style="margin-left:-13px; margin-top:10px;">菜单权限：</label>
+                    <div class="demoTable" style="float:right; margin-right:-18px;">
+                        <div class="layui-inline" style="display:none;">
+                            <button id="btnGetChecked" class="layui-btn layui-btn-primary layui-btn-sm get-checked">获取选中</button>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                                <i class="layui-icon">&#xe668;</i>展开全部
+                            </button>
+                        </div>
+                        <div class="layui-inline">
+                            <button id="btnFoldAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                                <i class="layui-icon">&#xe66b;</i>折叠全部
+                            </button>
+                        </div>
+                        <div class="layui-inline">
+                            <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字" style="width: 140px;height: 30px;line-height: 30px;padding: 0 5px;" />
+                        </div>
+                        <div class="layui-inline">
+                            <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
+                                <i class="layui-icon">&#xe615;</i>搜索
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-left:5px; margin-top:-15px;">
+                <table id="menuTable"></table>
+            </div>
+        </div>
+
+        <div class="layui-layer-btn" style="float:right; margin-right:5px; margin-top:-12px;">
+            <a class="layui-layer-btn0" lay-submit lay-filter="XAdmin-Role-Submit">确定</a>
+            <a class="layui-layer-btn1" onclick="formClose()">取消</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).use(['form','treeTable'],function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var treeTable = layui.treeTable;
+
+        //加载菜单权限列表
+        var insTb = treeTable.render({
+            elem: '#menuTable',
+            height: '375',
+            style: 'margin-top:0;',
+            tree: {
+                iconIndex: 2,
+                isPidData: true,
+                idName: 'id',
+                pidName: 'pId'
+            },
+            cols: [
+                { type: 'checkbox' },
+                { title: 'id', field: 'id', style: 'text-align:center;', align: 'center', width: 60, hide: true },
+                { title: '菜单名称', field: 'name', style: 'text-align:left;', align: 'left', width: 220 },
+                { title: '地址', field: 'MenuUrl', width: 250 },
+                { title: '测试', field: 'RoleID', width: 80,hide:true },
+                {
+                    title: '权限', field: 'AuthStr', width: 340, align: 'center', templet: function (d) {
+                        var authStr = d.AuthStr + "";
+                        var id = d.id;
+                        var add = "<input type='checkbox' name='auth' lay-skin='primary' title='新增' onclick='aaa(this)' value='" + id + "|Add' checked='checked'>";
+                        var edit = "<input type='checkbox' name='auth' lay-skin='primary' title='编辑' value='" + id + "|Edit'checked='checked'>";
+                        var del = "<input type='checkbox' name='auth' lay-skin='primary' title='删除' value='" + id + "|Del' checked='checked'>";
+                        var exp = "<input type='checkbox' name='auth' lay-skin='primary' title='导出' value='" + id + "|Exp' checked='checked'>";
+                        var Str = "";
+                        if (authStr.indexOf("Add") != '-1') { Str = add; } else { Str = add.replace("checked='checked'", ""); }
+                        if (authStr.indexOf("Edit") != '-1') { Str += edit; } else { Str += edit.replace("checked='checked'", ""); }
+                        if (authStr.indexOf("Del") != '-1') { Str += del; } else { Str += del.replace("checked='checked'", ""); }
+                        if (authStr.indexOf("Exp") != '-1') { Str += exp; } else { Str += exp.replace("checked='checked'", ""); }
+                        return Str;
+                    }
+                }
+            ]
+            ,response: {
+                statusCode: 1
+            }
+            ,reqData: function (data, callback) {
+                // 在这里写ajax请求，通过callback方法回调数据
+                $.get('@Html.RootPath()/SystemManagement/GetSysMenuListWithRole?RoleID=@Model.ID', function (res) {
+                    //callback(res.data);  // 参数是数组类型
+                    if (res.code == 1) {
+                        var data = res.data;
+                        for (var x in data) {
+                            console.log(data[x]);
+                            if (data[x].checked) {
+                                data[x]["LAY_CHECKED"] = 'true';
+                                var index = res.data[x]['LAY_TABLE_INDEX'];
+                                $('tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                                $('tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                            }
+                        }
+                        callback(res.data);
+                    }
+                    else callback(res.msg);
+                });
+            }
+        });
+
+        form.on('checkbox(aaa)', function (data) {
+            alert(data.value);
+            form.render('checkbox');
+        });
+
+        form.on('submit(XAdmin-Role-Submit)', function (data) {
+            //form.render();
+            //获取选中的菜单ID
+            var menuIdStr = "";
+            insTb.checkStatus().map(function (d) {
+                menuIdStr += d.id + "|";
+            });
+            //alert(menuIdStr);
+            //获取选中的菜单权限
+            var menuAuthStr = '';
+            $("input[name='auth']:checked").each(function () {
+                menuAuthStr += $(this).attr('value') + ';';
+            });
+            var roleId = "@Model.ID";
+            //alert(menuAuthStr);
+
+            if (menuIdStr == "") {
+                layer.msg("请为此角色设置权限！", { icon: 2, offset: 't' });
+                return;
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Html.RootPath()/RightsManagement/SaveRoleMenuAuth',
+                    data: { RoleID: roleId, MenuIDStr: menuIdStr, MenuAuthStr: menuAuthStr, RoleName: $("#RoleName").val(), Note: $("#Note").val() },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code == "1") {
+                            //在父窗口里得到当前iframe层的索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //再执行关闭
+                            parent.layer.close(index);
+                            parent.layui.table.reload('RoleList');
+                            parent.layer.msg("操作成功！", { icon: 1, offset: 't' });
+                        }
+                        else {
+                            layer.msg("操作失败！", { icon: 2, offset: 't' });
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data.msg);
+                    }
+                });   
+            }
+        });
+
+        window.formClose = function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+
+        // 获取选中
+        $('#btnGetChecked').click(function () {
+            form.render('checkbox');
+            var type = '';
+            $("input[name='auth']:checkbox").each(function () {
+                if ($(this).attr("checked")) {
+                    type += $(this).attr('value') + ';';
+                }
+            });
+            alert(type);
+
+            var IdStr = "";
+            insTb.checkStatus().map(function (d) {
+                IdStr += d.id + "|";
+            });
+            alert(IdStr);
+
+        });
+
+        // 全部展开
+        $('#btnExpandAll').click(function () {
+            insTb.expandAll();
+        });
+
+        // 全部折叠
+        $('#btnFoldAll').click(function () {
+            insTb.foldAll();
+        });
+
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            if (keywords) {
+                insTb.filterData(keywords);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+    })
+</script>

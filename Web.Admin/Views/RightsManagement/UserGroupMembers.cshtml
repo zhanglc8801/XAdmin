@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "用户组成员管理";
+}
+<style>
+    .layui-input-block {
+        margin-left: 120px;
+    }
+
+    .layui-form-label {
+        width: 90px;
+    }
+</style>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:25px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <label class="layui-form-label">选择用户组：</label>
+            <div class="layui-input-block">
+                <select name="GroupID" lay-search="" class="num4">
+                    <option value="0"></option>
+                    @{
+                        foreach (XAdmin.Model.Entity.GroupInfo item in ViewBag.GroupInfoList)
+                        {
+                            <option value="@item.ID">@item.GroupName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">成员名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="RealName" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">成员账号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="UserName" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">手机号码：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Mobile" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline" style="vertical-align:baseline;">
+            <button class="layui-btn" lay-submit lay-filter="user-search" style="margin-bottom:7px;">搜索</button>
+        </div>
+    </div>
+</div>
+
+<table class="layui-hide" id="MemberList" lay-filter="MemberList"></table>
+
+<script type="text/html" id="RealNameTpl">
+    <a href="javascript:ShowMember({{d.UserID}})" class="layui-table-link">{{ d.RealName }}</a>
+</script>
+
+<script type="text/html" id="ToolbarBtn">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="DeleteMembers">批量移除</button>
+    </div>
+</script>
+
+<script type="text/html" id="ActionBtn">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="remove">移除</a>
+</script>
+<script>
+    layui.use('table', function () {
+        var $ = layui.$;
+        var form = layui.form;
+        var table = layui.table;
+        //监听搜索
+        form.on('submit(user-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('MemberList', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                dataType: 'json',
+                where: { 'JsonStr': JSON.stringify(field) }
+            });
+        });
+        table.render({
+            elem: '#MemberList'
+            , height: 'auto'
+            , url: '@Html.RootPath()/RightsManagement/GetGroupUserList' //数据接口
+            , toolbar: '#ToolbarBtn'
+            //, page: true //开启分页
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'] //自定义分页布局
+                , groups: 8 //显示 8 个连续页码
+                , prev: '上一页'
+                , next: '下一页'
+            }
+            , limit: 10 //一页能够显示的最大数目
+            , even: true    //隔行换色
+            , skin: 'line ' //表格风格 line （行边框风格）row （列边框风格）nob （无边框风格）
+            , limits: [10, 20,30,50]  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            , method: 'post'  //提交方式
+            , cols: [[ //表头
+                  { type: 'checkbox' }
+                , { field: 'ID', title: '序号', width: 80, style: 'text-align:center;', type: 'numbers' }
+                , { field: 'RealName', title: '成员名称', width: 150, style: 'text-align:center;', sort: true, templet: '#RealNameTpl' }
+                , { field: 'UserName', title: '成员账号', width: 150, style: 'text-align:center;', sort: true }
+                , { field: 'UserID', title: '成员ID', hide: true }
+                , { field: 'Mobile', title: '手机号码', width: 150, style: 'text-align:center;', sort: true }
+                , { field: 'GroupName', title: '所属用户组', width: 150, align: 'center', sort: true }
+                , { fixed: 'right', title: '操作', toolbar: '#ActionBtn', width: 80, align: 'center' }
+            ]]
+        });
+
+        //头工具栏事件
+        table.on('toolbar(MemberList)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'DeleteMembers':
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择需要移除的成员！', { icon: 7, offset: 't' });
+                    }
+                    else {
+                        var IDStr = "";
+                        for (var i = 0; i < checkData.length; i++) {
+                            IDStr += checkData[i].ID + ",";
+                        }
+                        layer.confirm('确定要移除选中的成员吗？', { title: '移除成员', icon: 3 }, function (index) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/RightsManagement/RemoveGroupUser',
+                                data: { 'KeyStr': IDStr },
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("已删除！", { icon: 1, offset: 't' });
+                                        table.reload('MemberList', {});
+                                    }
+                                    else {
+                                        layer.msg("删除失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                        });
+                    }
+                    break;
+            };
+        });
+        //监听行工具事件
+        table.on('tool(MemberList)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'remove') {
+                layer.confirm('确定要从用户组中移除此成员吗？', { title: '移除成员', icon: 3 }, function (index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Html.RootPath()/RightsManagement/RemoveGroupUser',
+                        data: { 'KeyStr': data.ID },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code == "1") {
+                                layer.msg("操作成功！", { icon: 1, offset: 't' });
+                                table.reload('MemberList', {}); //数据刷新
+                                obj.del();
+                            }
+                            else {
+                                layer.msg("操作失败！", { icon: 2, offset: 't' });
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data.msg);
+                        },
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    function ShowMember(userId) {
+        layer.open({
+            type: 2
+            , title: '查看成员信息'
+            , shadeClose: true //点击遮罩区域是否关闭页面
+            , shade: 0.8  //遮罩透明度
+            , content: '/RightsManagement/UserShow?ID=' + userId
+            , maxmin: true
+            , area: ['820px', '600px']
+            , btn: ['关闭']
+        });
+    }
+</script>

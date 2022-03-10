@@ -1,0 +1,261 @@
+﻿@model XAdmin.Model.CustomEntity.UserModel
+@{
+    ViewBag.Title = "查看用户信息";
+}
+<style>
+    .layui-form-select dl {
+        max-height: 200px;
+    }
+
+    .RoleBtn {
+        padding: 3px;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-left: 5px;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-usershow" id="layuiadmin-form-usershow">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本信息</li>
+            <li>扩展信息</li>
+        </ul>
+        <div class="layui-tab-content" style="overflow-y:scroll; height:400px;">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <input type="hidden" name="ID" value="@Model.ID" />
+                    <input type="hidden" name="UserType" value="@Model.UserType" />
+                    <div class="layui-input-inline input">
+                        <input type="text" name="UserName" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" value="@Model.UserName">
+                    </div>
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="Pwd" placeholder="********" autocomplete="off" class="layui-input" maxlength="18" value="">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="RealName" lay-verify="required" placeholder="请输入真实姓名" autocomplete="off" class="layui-input" value="@Model.RealName">
+                    </div>
+                    <label class="layui-form-label">手机号码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Mobile" lay-verify="phone" placeholder="请输入号码" autocomplete="off" class="layui-input" value="@Model.Mobile">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="EMail" placeholder="请输入邮箱" autocomplete="off" class="layui-input" value="@Model.EMail">
+                    </div>
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline">
+                        @{
+                            if (Model.Gender == 1)
+                            {
+                                <input type="radio" name="Gender" value="1" title="男" checked>
+                                <input type="radio" name="Gender" value="2" title="女">
+                            }
+                            else if (Model.Gender == 2)
+                            {
+                                <input type="radio" name="Gender" value="1" title="男">
+                                <input type="radio" name="Gender" value="2" title="女" checked>
+                            }
+                            else
+                            {
+                                <input type="radio" name="Gender" value="1" title="男">
+                                <input type="radio" name="Gender" value="2" title="女">
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display:none;">
+                    <label class="layui-form-label">用户状态</label>
+                    @{
+                        if (Model.Status == 1)
+                        {
+                            <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" checked="checked" lay-filter="StatusChange" value="@Model.Status">
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusChange" value="@Model.Status">
+                        }
+                    }
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="Remark" id="Remark" class="layui-textarea">@Model.Remark</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">权限</label>
+                    <table style="border-collapse:separate;border-spacing:0px 5px;">
+                        @{
+                            for (int i = 0; i < ViewBag.RoleUserList.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <select name="SetRole">
+                                            @{
+                                                foreach (XAdmin.Model.Entity.RoleInfo info in ViewBag.RoleList)
+                                                {
+                                                    if (ViewBag.RoleUserList[i].RoleID == info.ID)
+                                                    {
+                                                        <option value="@info.ID" selected="selected">@info.RoleName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@info.ID">@info.RoleName</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+
+            </div>
+            <div class="layui-tab-item">
+                @*用户扩展信息*@
+                <input type="hidden" name="PKID" value="@Model.PKID" />
+                <input type="hidden" name="SiteID" value="@Model.SiteID" />
+                <input type="hidden" name="UserID" value="@Model.ID" />
+                <div class="layui-form-item" id="area-picker">
+                    <label class="layui-form-label">所在地区</label>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input type="text" name="Province" autocomplete="off" class="layui-input" value="@Model.Province" style="width:200px;">
+                    </div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input type="text" name="Province" autocomplete="off" class="layui-input" value="@Model.City" style="width:200px;">
+                    </div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input type="text" name="Province" autocomplete="off" class="layui-input" value="@Model.County" style="width:200px;">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Address" autocomplete="off" class="layui-input" value="@Model.Address" style="width:410px;">
+                    </div>
+                    <label class="layui-form-label" style="margin-left:140px;">邮编</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ZipCode" autocomplete="off" class="layui-input" value="@Model.ZipCode" style="width:158px;">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工作单位</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="WorkUnit" autocomplete="off" class="layui-input" value="@Model.WorkUnit" style="width:220px;">
+                    </div>
+                    <label class="layui-form-label" style="width:30px; padding-left:0px; margin-left:20px;">电话</label>
+                    <div class="layui-input-inline" style="width:135px;">
+                        <input type="text" name="Tel" autocomplete="off" class="layui-input" value="@Model.Tel" style="width:135px;">
+                    </div>
+                    <label class="layui-form-label" style="width:30px; padding-left:0px; margin-left:-5px;">传真</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Fox" autocomplete="off" class="layui-input" value="@Model.Fox" style="width:158px;">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">证件类型</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <select name="IDType" id="IDType" lay-filter="aihao">
+                            <option value="">请选择</option>
+                            <option value="1">身份证</option>
+                            <option value="2">军官证</option>
+                            <option value="3">护照</option>
+                            <option value="4" selected="selected">其他</option>
+                        </select>
+                        <script>
+                            document.getElementById("IDType").value = "@Model.IDType";
+                        </script>
+                    </div>
+                    <label class="layui-form-label">证件号码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="IDNo" autocomplete="off" class="layui-input" value="@Model.IDNo" style="width:258px;">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">民族</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <input type="text" name="Tel" autocomplete="off" class="layui-input" value="@Model.Nation" style="width:240px;">
+                    </div>
+                    <label class="layui-form-label">出生日期</label>
+                    <div class="layui-input-inline">
+                        @{
+                            if (Model.Birthday == null)
+                            {
+                                <input type="text" name="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" value="" class="layui-input" style="width:258px;">
+                            }
+                            else
+                            {
+                                <input type="text" name="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" value="@Model.Birthday.Value.ToString("yyyy-MM-dd")" class="layui-input" style="width:258px;">
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学历</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <select name="Education" id="Education" lay-filter="aihao">
+                            <option value="">请选择</option>
+                            <option value="1">专科</option>
+                            <option value="2">本科</option>
+                            <option value="3">研究生</option>
+                            <option value="3">硕士</option>
+                            <option value="3">博士</option>
+                            <option value="3">博士后</option>
+                        </select>
+                        <script>
+                            document.getElementById("Education").value = "@Model.Education";
+                        </script>
+                    </div>
+                    <label class="layui-form-label">毕业院校</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="University" autocomplete="off" class="layui-input" value="@Model.University" style="width:258px;">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">专业</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <input type="text" name="Professional" autocomplete="off" class="layui-input" value="@Model.Professional" style="width:240px;">
+                    </div>
+                    <label class="layui-form-label">职称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="JobTitle" autocomplete="off" class="layui-input" value="@Model.JobTitle" style="width:258px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element'], function () {
+        var $ = layui.$;
+        var readForm = layui.$('[lay-filter="layuiadmin-form-usershow"]')
+        readForm.find('input,textarea,select').prop('disabled', true);
+        readForm.find('.layui-layedit iframe').contents().find('body').prop('contenteditable', false);
+        layui.form.render();
+    });
+</script>
+
+
+

@@ -1,0 +1,148 @@
+﻿@model XAdmin.Model.Entity.Site_Channel
+@{
+    ViewBag.Title = "修改栏目信息";
+}
+<style>
+    .ztree {
+        height: 210px;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-channelEdit" id="layuiadmin-form-channelEdit">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级栏目：</label>
+            <div class="layui-input-inline" id="PDIV" style="width:400px;">
+                <input type="text" id="ParentID" name="ParentID" lay-filter="tree" class="layui-input" style="width:99%" value="@Model.ParentID">
+            </div>
+            <div class="layui-input-inline" style="width:90px">
+                <input type="checkbox" name="isroot" id="isroot" lay-skin="primary" lay-filter="lay-isroot" title="一级栏目" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">栏目名称：</label>
+            <input type="hidden" name="ID" value="@Model.ID" />
+            <div class="layui-input-inline" style="width:400px;">
+                <input type="text" name="Name" lay-verify="required" placeholder="栏目名称" autocomplete="off" class="layui-input" value="@Model.Name">
+            </div>
+            <div class="layui-input-inline" style="width:80px; margin-right:0px;">
+                @{
+                    if (Model.Status == true)
+                    {
+                        <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" checked="checked" lay-filter="StatusChange">
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" lay-filter="StatusChange">
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容类型：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="ContentType" value="0" title="仅目录">
+                <input type="radio" name="ContentType" value="1" title="描述类">
+                <input type="radio" name="ContentType" value="2" title="列表类">
+                <input type="radio" name="ContentType" value="3" title="图片类"><br />
+                <input type="radio" name="ContentType" value="4" title="音频类">
+                <input type="radio" name="ContentType" value="5" title="视频类">
+                <input type="radio" name="ContentType" value="6" title="文件类">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">关键字：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Keywords" placeholder="关键字" autocomplete="off" class="layui-input" style="width:95%;" value="@Model.Keywords">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述：</label>
+            <div class="layui-input-block">
+                <textarea name="Description" id="Description" placeholder="栏目相关描述" class="layui-textarea" style="width:95%;">@Model.Description</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号：</label>
+            <div class="layui-input-inline" style="width:100px">
+                <input type="number" name="SortID" lay-verify="number" placeholder="菜单序号" autocomplete="off" class="layui-input" value="@Model.SortID">
+            </div>
+
+            <div class="layui-input-inline">
+                <label class="layui-form-label">导航栏显示</label>
+                @{
+                    if (Model.IsNav == true)
+                    {
+                        <input type="checkbox" name="IsNav" lay-skin="switch" lay-text="是|否" checked="checked" lay-filter="IsNavChange">
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="IsNav" lay-skin="switch" lay-text="是|否" lay-filter="StatusChange">
+                    }
+                }
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="LayAdmin-channel-submit" id="LayAdmin-channel-submit" value="确认">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element', 'treeSelect','layer'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , treeSelect = layui.treeSelect;
+        treeSelect.render({
+            elem: '#ParentID',
+            data:'@Html.RootPath()/SiteInfoManagement/MakeChannelSelect',
+            headers: {},
+            type: 'post',
+            placeholder: '搜索',
+            search: true,
+            style: {
+                folder: { enable: true },
+                line: { enable: true }
+            },
+            // 点击回调
+            click: function (d) {
+                //console.log(d);
+                //alert(d.current.id);
+                $("#ParentID").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+                //选中节点，根据id筛选
+                treeSelect.checkNode('tree', '@Model.ParentID');
+                //刷新树结构
+                treeSelect.refresh('tree');
+            }
+        });
+
+        if ('@Model.ParentID' == '0') {
+            $("#isroot").attr("checked", "checked");
+            $("#PDIV").attr("style", "display:none");
+            form.render();
+        }
+
+        form.on('checkbox(lay-isroot)', function (data) {
+            if (data.elem.checked) {
+                $("#PDIV").attr("style", "display:none");
+            }
+            else {
+                $("#PDIV").attr("style","display:inline;width:400px;");
+            }
+        });
+
+        $("input[name=ContentType][value=@Model.ContentType]").prop("checked", "true");
+        form.render();
+    })
+</script>

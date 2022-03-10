@@ -1,0 +1,788 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\layuiadmin\config.js" />
+    <Content Remove="wwwroot\layuiadmin\json\console\prograss.js" />
+    <Content Remove="wwwroot\layuiadmin\json\console\top-card.js" />
+    <Content Remove="wwwroot\layuiadmin\json\console\top-search.js" />
+    <Content Remove="wwwroot\layuiadmin\json\content\comment.js" />
+    <Content Remove="wwwroot\layuiadmin\json\content\list.js" />
+    <Content Remove="wwwroot\layuiadmin\json\content\tags.js" />
+    <Content Remove="wwwroot\layuiadmin\json\forum\list.js" />
+    <Content Remove="wwwroot\layuiadmin\json\forum\replys.js" />
+    <Content Remove="wwwroot\layuiadmin\json\layer\photos.js" />
+    <Content Remove="wwwroot\layuiadmin\json\layim\getList.js" />
+    <Content Remove="wwwroot\layuiadmin\json\layim\getMembers.js" />
+    <Content Remove="wwwroot\layuiadmin\json\mall\order.js" />
+    <Content Remove="wwwroot\layuiadmin\json\menu.js" />
+    <Content Remove="wwwroot\layuiadmin\json\menu1.js" />
+    <Content Remove="wwwroot\layuiadmin\json\message\all.js" />
+    <Content Remove="wwwroot\layuiadmin\json\message\detail.js" />
+    <Content Remove="wwwroot\layuiadmin\json\message\direct.js" />
+    <Content Remove="wwwroot\layuiadmin\json\message\new.js" />
+    <Content Remove="wwwroot\layuiadmin\json\message\notice.js" />
+    <Content Remove="wwwroot\layuiadmin\json\table\demo.js" />
+    <Content Remove="wwwroot\layuiadmin\json\table\demo2.js" />
+    <Content Remove="wwwroot\layuiadmin\json\table\demo3.js" />
+    <Content Remove="wwwroot\layuiadmin\json\table\user.js" />
+    <Content Remove="wwwroot\layuiadmin\json\table\user30.js" />
+    <Content Remove="wwwroot\layuiadmin\json\upload\demo.js" />
+    <Content Remove="wwwroot\layuiadmin\json\useradmin\mangadmin.js" />
+    <Content Remove="wwwroot\layuiadmin\json\useradmin\role.js" />
+    <Content Remove="wwwroot\layuiadmin\json\useradmin\webuser.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\forget.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\login.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\logout.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\reg.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\resetpass.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\session.js" />
+    <Content Remove="wwwroot\layuiadmin\json\user\sms.js" />
+    <Content Remove="wwwroot\layuiadmin\json\workorder\demo.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\font\iconfont.svg" />
+    <Content Remove="wwwroot\layuiadmin\layui\font\iconfont.woff2" />
+    <Content Remove="wwwroot\layuiadmin\layui\layui.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\all-mobile.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\all.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\carousel.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\code.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\colorpicker.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\element.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\flow.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\form.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\jquery.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\laydate.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\layedit.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\layer.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\layim.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\laypage.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\laytpl.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile\layer-mobile.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile\layim-mobile-open.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile\layim-mobile.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile\upload-mobile.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\mobile\zepto.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\rate.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\slider.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\table.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\tree.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\upload.js" />
+    <Content Remove="wwwroot\layuiadmin\layui\lay\modules\util.js" />
+    <Content Remove="wwwroot\layuiadmin\lib\admin.js" />
+    <Content Remove="wwwroot\layuiadmin\lib\extend\echarts.js" />
+    <Content Remove="wwwroot\layuiadmin\lib\extend\echartsTheme.js" />
+    <Content Remove="wwwroot\layuiadmin\lib\index.js" />
+    <Content Remove="wwwroot\layuiadmin\lib\view.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\ckplayer.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\ckplayer.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\ckplayer.swf" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\hls\hls.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\hls\hls.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\ckplayer\hls\LICENSE" />
+    <Content Remove="wwwroot\layuiadmin\modules\code.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\common.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\console.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\contlist.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\cropper.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\croppers.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\form.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\forum.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\iconPicker.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\im.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\layarea.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\laytpl.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\message.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\numinput\numinput.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\numinput\numinput.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\sample.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\senior.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\set.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\textool\textool.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\textool\textool.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\.yarnrc" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\icons\default\icons.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\icons\default\icons.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\jquery.tinymce.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\langs\readme.md" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\langs\zh_CN.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\advlist\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\anchor\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autolink\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autoresize\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autosave\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\bbcode\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\bbcode\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\charmap\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\codesample\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\code\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\code\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\colorpicker\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\colorpicker\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\contextmenu\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\contextmenu\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\directionality\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\js\emojis.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\js\emojis.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullpage\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullpage\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullscreen\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\help\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\help\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\hr\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\hr\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\imagetools\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\imagetools\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\image\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\image\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\importcss\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\insertdatetime\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\legacyoutput\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\link\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\link\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\lists\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\lists\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\media\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\media\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\nonbreaking\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\noneditable\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\noneditable\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\pagebreak\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\paste\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\paste\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\preview\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\preview\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\print\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\print\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\quickbars\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\quickbars\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\save\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\save\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\searchreplace\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\spellchecker\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\spellchecker\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\tabfocus\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\tabfocus\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\table\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\table\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\template\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\template\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textcolor\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textcolor\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textpattern\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textpattern\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\toc\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\toc\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\videofan\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\videofan\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualblocks\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualchars\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\wordcount\plugin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\dark\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\default\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\document\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\writer\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.inline.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.mobile.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.mobile.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.inline.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.mobile.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.mobile.min.css.map" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\mobile\theme.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\mobile\theme.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\silver\theme.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\silver\theme.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\tinymce.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\tinymce.min.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\tinymce\tinymce\yarn.lock" />
+    <Content Remove="wwwroot\layuiadmin\modules\treeSelect.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\user.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\useradmin.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\util.js" />
+    <Content Remove="wwwroot\layuiadmin\modules\workorder.js" />
+    <Content Remove="wwwroot\layuiadmin\treeTable.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XAdmin.Service\XAdmin.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\layuiadmin\config.js" />
+    <None Include="wwwroot\layuiadmin\json\console\prograss.js" />
+    <None Include="wwwroot\layuiadmin\json\console\top-card.js" />
+    <None Include="wwwroot\layuiadmin\json\console\top-search.js" />
+    <None Include="wwwroot\layuiadmin\json\content\comment.js" />
+    <None Include="wwwroot\layuiadmin\json\content\list.js" />
+    <None Include="wwwroot\layuiadmin\json\content\tags.js" />
+    <None Include="wwwroot\layuiadmin\json\forum\list.js" />
+    <None Include="wwwroot\layuiadmin\json\forum\replys.js" />
+    <None Include="wwwroot\layuiadmin\json\layer\photos.js" />
+    <None Include="wwwroot\layuiadmin\json\layim\getList.js" />
+    <None Include="wwwroot\layuiadmin\json\layim\getMembers.js" />
+    <None Include="wwwroot\layuiadmin\json\mall\order.js" />
+    <None Include="wwwroot\layuiadmin\json\menu.js" />
+    <None Include="wwwroot\layuiadmin\json\menu1.js" />
+    <None Include="wwwroot\layuiadmin\json\message\all.js" />
+    <None Include="wwwroot\layuiadmin\json\message\detail.js" />
+    <None Include="wwwroot\layuiadmin\json\message\direct.js" />
+    <None Include="wwwroot\layuiadmin\json\message\new.js" />
+    <None Include="wwwroot\layuiadmin\json\message\notice.js" />
+    <None Include="wwwroot\layuiadmin\json\table\demo.js" />
+    <None Include="wwwroot\layuiadmin\json\table\demo2.js" />
+    <None Include="wwwroot\layuiadmin\json\table\demo3.js" />
+    <None Include="wwwroot\layuiadmin\json\table\user.js" />
+    <None Include="wwwroot\layuiadmin\json\table\user30.js" />
+    <None Include="wwwroot\layuiadmin\json\upload\demo.js" />
+    <None Include="wwwroot\layuiadmin\json\useradmin\mangadmin.js" />
+    <None Include="wwwroot\layuiadmin\json\useradmin\role.js" />
+    <None Include="wwwroot\layuiadmin\json\useradmin\webuser.js" />
+    <None Include="wwwroot\layuiadmin\json\user\forget.js" />
+    <None Include="wwwroot\layuiadmin\json\user\login.js" />
+    <None Include="wwwroot\layuiadmin\json\user\logout.js" />
+    <None Include="wwwroot\layuiadmin\json\user\reg.js" />
+    <None Include="wwwroot\layuiadmin\json\user\resetpass.js" />
+    <None Include="wwwroot\layuiadmin\json\user\session.js" />
+    <None Include="wwwroot\layuiadmin\json\user\sms.js" />
+    <None Include="wwwroot\layuiadmin\json\workorder\demo.js" />
+    <None Include="wwwroot\layuiadmin\layui\font\iconfont.svg" />
+    <None Include="wwwroot\layuiadmin\layui\font\iconfont.woff2" />
+    <None Include="wwwroot\layuiadmin\layui\layui.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\all-mobile.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\all.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\carousel.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\code.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\colorpicker.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\element.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\flow.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\form.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\jquery.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\laydate.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\layedit.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\layer.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\layim.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\laypage.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\laytpl.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile\layer-mobile.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile\layim-mobile-open.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile\layim-mobile.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile\upload-mobile.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\mobile\zepto.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\rate.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\slider.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\table.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\tree.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\upload.js" />
+    <None Include="wwwroot\layuiadmin\layui\lay\modules\util.js" />
+    <None Include="wwwroot\layuiadmin\lib\admin.js" />
+    <None Include="wwwroot\layuiadmin\lib\extend\echarts.js" />
+    <None Include="wwwroot\layuiadmin\lib\extend\echartsTheme.js" />
+    <None Include="wwwroot\layuiadmin\lib\index.js" />
+    <None Include="wwwroot\layuiadmin\lib\view.js" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\ckplayer.js" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\ckplayer.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\ckplayer.swf" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\hls\hls.js" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\hls\hls.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\ckplayer\hls\LICENSE" />
+    <None Include="wwwroot\layuiadmin\modules\code.js" />
+    <None Include="wwwroot\layuiadmin\modules\common.js" />
+    <None Include="wwwroot\layuiadmin\modules\console.js" />
+    <None Include="wwwroot\layuiadmin\modules\contlist.js" />
+    <None Include="wwwroot\layuiadmin\modules\cropper.js" />
+    <None Include="wwwroot\layuiadmin\modules\croppers.js" />
+    <None Include="wwwroot\layuiadmin\modules\form.js" />
+    <None Include="wwwroot\layuiadmin\modules\forum.js" />
+    <None Include="wwwroot\layuiadmin\modules\iconPicker.js" />
+    <None Include="wwwroot\layuiadmin\modules\im.js" />
+    <None Include="wwwroot\layuiadmin\modules\layarea.js" />
+    <None Include="wwwroot\layuiadmin\modules\laytpl.js" />
+    <None Include="wwwroot\layuiadmin\modules\message.js" />
+    <None Include="wwwroot\layuiadmin\modules\numinput\numinput.js" />
+    <None Include="wwwroot\layuiadmin\modules\numinput\numinput.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\sample.js" />
+    <None Include="wwwroot\layuiadmin\modules\senior.js" />
+    <None Include="wwwroot\layuiadmin\modules\set.js" />
+    <None Include="wwwroot\layuiadmin\modules\textool\textool.js" />
+    <None Include="wwwroot\layuiadmin\modules\textool\textool.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\.yarnrc" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\icons\default\icons.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\icons\default\icons.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\jquery.tinymce.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\langs\readme.md" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\langs\zh_CN.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\advlist\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\advlist\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\anchor\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\anchor\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autolink\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autolink\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autoresize\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autoresize\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autosave\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\autosave\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\bbcode\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\bbcode\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\charmap\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\charmap\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\codesample\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\codesample\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\code\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\code\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\colorpicker\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\colorpicker\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\contextmenu\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\contextmenu\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\directionality\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\directionality\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\js\emojis.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\js\emojis.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\emoticons\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullpage\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullpage\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullscreen\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\fullscreen\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\help\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\help\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\hr\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\hr\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\imagetools\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\imagetools\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\image\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\image\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\importcss\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\importcss\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\insertdatetime\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\legacyoutput\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\link\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\link\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\lists\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\lists\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\media\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\media\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\nonbreaking\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\noneditable\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\noneditable\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\pagebreak\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\pagebreak\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\paste\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\paste\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\preview\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\preview\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\print\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\print\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\quickbars\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\quickbars\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\save\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\save\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\searchreplace\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\searchreplace\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\spellchecker\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\spellchecker\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\tabfocus\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\tabfocus\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\table\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\table\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\template\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\template\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textcolor\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textcolor\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textpattern\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\textpattern\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\toc\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\toc\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\videofan\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\videofan\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualblocks\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualblocks\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualchars\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\visualchars\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\wordcount\plugin.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\wordcount\plugin.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\dark\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\default\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\document\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\writer\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.inline.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.mobile.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.mobile.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.inline.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.mobile.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.mobile.min.css.map" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\mobile\theme.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\mobile\theme.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\silver\theme.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\themes\silver\theme.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\tinymce.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\tinymce.min.js" />
+    <None Include="wwwroot\layuiadmin\modules\tinymce\tinymce\yarn.lock" />
+    <None Include="wwwroot\layuiadmin\modules\treeSelect.js" />
+    <None Include="wwwroot\layuiadmin\modules\user.js" />
+    <None Include="wwwroot\layuiadmin\modules\useradmin.js" />
+    <None Include="wwwroot\layuiadmin\modules\util.js" />
+    <None Include="wwwroot\layuiadmin\modules\workorder.js" />
+    <None Include="wwwroot\layuiadmin\treeTable.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\layuiadmin\index.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\json\说明.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\layui.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\code.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\laydate\default\laydate.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\icon-ext.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\icon.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\layer.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\loading-0.gif">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\loading-1.gif">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\css\modules\layer\default\loading-2.gif">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\font\iconfont.eot">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\font\iconfont.ttf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\layui\font\iconfont.woff">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\ckplayer\ckplayer.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\ckplayer\ckplayer.mobile.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\ckplayer\language.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\ckplayer\style.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\ckplayer\style.mobile.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\cropper.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\data3.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\package.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\loading.gif">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\axupimgs\upfiles.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\plugins\videofan\video.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\dark\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\dark\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\default\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\default\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\document\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\document\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\writer\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\content\writer\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.inline.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.inline.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.mobile.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\content.mobile.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\fonts\tinymce-mobile.woff">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.mobile.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide-dark\skin.mobile.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.inline.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.inline.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.mobile.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\content.mobile.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.mobile.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\modules\tinymce\tinymce\skins\ui\oxide\skin.mobile.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\admin.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\login.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\bg-none.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\layui-logo.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\logo-black.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\logo.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\template\character.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\template\huge.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\res\template\portrait.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\style\template.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\layim\demo.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\system\about.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\system\get.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\system\more.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\system\theme.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\system\说明.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\tpl\说明.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\treeTable\demo.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\treeTable\icon_date.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\treeTable\menus.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\layuiadmin\treeTable\treeTable.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

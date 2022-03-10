@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Web.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Web.Api.Controllers.CommonAPIController">
+            <summary>
+            公共操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.CommonAPIController.GetProvinceList(XAdmin.Model.QueryEntity.AreaQuery)">
+            <summary>
+            获取省级行政区划列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.CommonAPIController.GetAreaListByParentID(XAdmin.Model.QueryEntity.AreaQuery)">
+            <summary>
+            根据ParentID获取行政区划列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.CommonAPIController.GetAreaModel(XAdmin.Model.QueryEntity.AreaQuery)">
+            <summary>
+            获取行政区划实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.CommonAPIController.MakeAreaTreeSelect(XAdmin.Model.QueryEntity.AreaQuery)">
+            <summary>
+            通用选择区域下拉框TreeSelect
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.ResourcesAPIController">
+            <summary>
+            资源文件操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.InsertResources(XAdmin.Model.Entity.Resources)">
+            <summary>
+            插入资源表数据
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.GetAllResourcesPageList(XAdmin.Model.QueryEntity.ResourcesQuery)">
+            <summary>
+            获取所有资源分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.GetResourcesPageList(XAdmin.Model.QueryEntity.ResourcesQuery)">
+            <summary>
+            根据条件获取资源分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.GetResourcesList(XAdmin.Model.QueryEntity.ResourcesQuery)">
+            <summary>
+            根据ID字符串获取文件列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.GetResourcesModel(XAdmin.Model.QueryEntity.ResourcesQuery)">
+            <summary>
+            根据文件ID获取资源实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.ResourcesAPIController.GetResourcesModelByMD5(XAdmin.Model.QueryEntity.ResourcesQuery)">
+            <summary>
+            根据文件MD5获取资源实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.RightMgrAPIController">
+            <summary>
+            权限操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetGroupInfoPageList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取用户组分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetGroupInfoList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取用户组列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetUserGroupModel(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取用户组信息
+            </summary>
+            <param name="GroupID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.ChangeGroupStatus(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            更改用户组状态
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.SaveGroupInfo(XAdmin.Model.Entity.GroupInfo)">
+            <summary>
+            保存用户组信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.DeleteGroupInfo(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除用户组
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetGroupUserList(XAdmin.Model.QueryEntity.GroupUserQuery)">
+            <summary>
+            获取用户组中的用户列表
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.RemoveGroupUser(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            从用户组中移除成员
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetNotGroupUserList(XAdmin.Model.QueryEntity.GroupUserQuery)">
+            <summary>
+            获取未加入用户组的成员列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.AddGroupUser(XAdmin.Model.QueryEntity.AddGroupUser)">
+            <summary>
+            加入用户组成员
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetRolePageList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取角色分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetRoleList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取角色列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetRoleModel(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取角色信息
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.SaveRoleInfo(XAdmin.Model.Entity.RoleInfo)">
+            <summary>
+            保存角色信息
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.SaveRoleMenuAuth(XAdmin.Model.CustomEntity.RoleAuthListModel)">
+            <summary>
+            保存角色菜单权限
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.DeleteRoleInfo(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="IdStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.SetUserRole(XAdmin.Model.CustomEntity.SetUserRoleModel)">
+            <summary>
+            设置用户角色
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.GetRoleMenuList(XAdmin.Model.QueryEntity.RoleMenuQuery)">
+            <summary>
+            获取角色菜单列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.RightMgrAPIController.SetRoleMenu(XAdmin.Model.QueryEntity.SetRoleMenu)">
+            <summary>
+            设置角色菜单
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.SiteInfoManagementAPIController">
+            <summary>
+            网站信息管理API
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetSiteChannelList(XAdmin.Model.QueryEntity.Site_ChannelQuery)">
+            <summary>
+            获取站点栏目列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetSiteChannelModel(XAdmin.Model.QueryEntity.Site_ChannelQuery)">
+            <summary>
+            获取栏目实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.MakeChannelSelect(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            组装上级栏目下拉框
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.ChangeChannelStatus(XAdmin.Model.Entity.Site_Channel)">
+            <summary>
+            更改栏目状态
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.SaveChannel(XAdmin.Model.Entity.Site_Channel)">
+            <summary>
+            保存网站栏目信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetChannelMenuList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取栏目内容管理 左侧栏目菜单
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetDescriptionModel(XAdmin.Model.Entity.SiteChannel_DescriptionContent)">
+            <summary>
+            获取描述类内容实体
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.SaveDescription(XAdmin.Model.Entity.SiteChannel_DescriptionContent)">
+            <summary>
+            保存描述类信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetNewsPageList(XAdmin.Model.QueryEntity.SiteChannelQuery)">
+            <summary>
+            获取新闻资讯分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.GetNewsModel(XAdmin.Model.QueryEntity.SiteChannelQuery)">
+            <summary>
+            获取新闻资讯内容实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.ChangeChannelContentStatus(XAdmin.Model.QueryEntity.SiteChannelQuery)">
+            <summary>
+            更改各栏目内容状态
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.SaveNewsInfo(XAdmin.Model.Entity.SiteChannel_NewsContent)">
+            <summary>
+            保存新闻资讯信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SiteInfoManagementAPIController.DeleteNews(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除新闻资讯
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.SystemManagementAPIController">
+            <summary>
+            系统管理类操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.GetMenuList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取所有菜单列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.GetSysMenuListWithRole(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取含有角色的所有菜单列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.GetMenuModel(XAdmin.Model.QueryEntity.MenuQuery)">
+            <summary>
+            获取菜单实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.UpdateMenu(XAdmin.Model.QueryEntity.MenuQuery)">
+            <summary>
+            异步更新菜单数据
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.MakeTreeSelect(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            组装树形菜单下拉框TreeSelect
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.SaveMenu(XAdmin.Model.Entity.Menu)">
+            <summary>
+            保存菜单
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.DeleteMenu(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.GetAreaList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            异步获取所有行政区划列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.GetAreaPageList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            异步获取行政区划分页列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.UpdateArea(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            异步更新行政区划信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.DeleteArea(XAdmin.Model.Entity.Area)">
+            <summary>
+            删除行政区划信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.SetAreaStatus(XAdmin.Model.Entity.Area)">
+            <summary>
+            设置行政区划禁用状态
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.SystemManagementAPIController.SaveArea(XAdmin.Model.Entity.Area)">
+            <summary>
+            保存行政区划修改
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.UserInfoAPIController">
+            <summary>
+            用户操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.UserLogin(XAdmin.Model.QueryEntity.UserInfoQuery)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.UpdateLoginInfo(XAdmin.Model.Entity.UserInfo)">
+            <summary>
+            更新用户登录信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.GetUserRoleIDList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            取用户角色ID列表 用于切换角色时获取后验证
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.ChangePassword(XAdmin.Model.CustomEntity.ChangePwd)">
+            <summary>
+            更改密码
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.SetNewPassword(XAdmin.Model.CustomEntity.ChangePwd)">
+            <summary>
+            设置新密码
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.GetUserPageList(XAdmin.Model.QueryEntity.UserInfoQuery)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.ChangeUserStatus(XAdmin.Model.QueryEntity.UserInfoQuery)">
+            <summary>
+            更改用户状态
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.GetUserModel(XAdmin.Model.QueryEntity.UserInfoQuery)">
+            <summary>
+            获取用户信息实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.UpdateUserInfo(XAdmin.Model.Entity.UserInfo)">
+            <summary>
+            修改用户信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.UpdateUserDetail(XAdmin.Model.Entity.UserDetail)">
+            <summary>
+            修改用户扩展信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.ChangeUserPhoto(XAdmin.Model.Entity.UserInfo)">
+            <summary>
+            更改用户头像 ChangeUserPhoto
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.UserInfoAPIController.DeleteUserInfo(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除用户信息
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Api.Controllers.WorkFlowAPIController">
+            <summary>
+            流程操作
+            </summary>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.GetFormTypeList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取所有表单类别列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.GetFormTypeModel(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取表单类别实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.SaveFormType(XAdmin.Model.Entity.FormType)">
+            <summary>
+            保存表单类别信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.DeleteFormType(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除表单类别
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.GetFormList(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取所有表单列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.GetFormModel(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            获取表单实体
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.SaveForm(XAdmin.Model.Entity.Form)">
+            <summary>
+            保存表单信息
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Api.Controllers.WorkFlowAPIController.DeleteForm(XAdmin.Model.QueryEntity.QueryBase)">
+            <summary>
+            删除表单
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

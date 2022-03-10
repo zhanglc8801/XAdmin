@@ -1,0 +1,114 @@
+﻿@model XAdmin.Model.Entity.RoleInfo
+@{
+    ViewBag.Title = "添加用户组成员";
+}
+<style>
+    .layui-inline {
+        width: 240px;
+    }
+
+    .layui-form-label {
+        width: 60px;
+    }
+
+    .layui-input-block {
+        margin-left: 90px;
+    }
+</style>
+
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="width:1000px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="UserName" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="RealName" placeholder="请输入" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline" style="width:210px;">
+            <label class="layui-form-label" style="width:30px;">角色</label>
+            <div class="layui-input-block" style="width:150px; margin-left:60px;">
+                <select name="RoleId">
+                    <option value="0">选择角色</option>
+                    @{
+                        foreach (XAdmin.Model.Entity.RoleInfo info in ViewBag.RoleList)
+                        {
+                            <option value="@info.ID">@info.RoleName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn" lay-submit lay-filter="user-search" style="display:block;">搜索</button>
+        </div>
+    </div>
+</div>
+<table class="layui-hide" id="container" lay-filter="container"></table>
+
+<script>
+    layui.use('table', function () {
+        var $ = layui.$;
+        var form = layui.form;
+        var table = layui.table;
+        //监听搜索
+        form.on('submit(user-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('container', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                dataType: 'json',
+                where: { 'JsonStr': JSON.stringify(field) }
+            });
+        });
+        table.render({
+            elem: '#container'
+            , height: 'auto'
+            , url: '@Html.RootPath()/RightsManagement/GetNotGroupUserList' //数据接口
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'] //自定义分页布局
+                , groups: 8 //显示 8 个连续页码
+                , prev: '上一页'
+                , next: '下一页'
+            }
+            , where: { GroupID: '@ViewBag.GroupID' } //扩展参数,可以传数据到后台
+            , limit: 10 //一页能够显示的最大数目
+            , even: true    //隔行换色
+            , skin: 'line ' //表格风格 line （行边框风格）row （列边框风格）nob （无边框风格）
+            , limits: [10]  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            , method: 'post'  //提交方式
+            , cols: [[ //表头
+                { type: 'checkbox' }
+                , { field: 'ID', title: '序号', width: 70, style: 'text-align:center;', align: 'center', type: 'numbers' }
+                , { field: 'UserName', title: '用户名', width: 160, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'RealName', title: '真实姓名', width: 150, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'RoleName', title: '角色', width: 110, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'EMail', title: 'Email', width: 220, style: 'text-align:left;', align: 'center', sort: true }
+                , { field: 'Mobile', title: '手机号码', width: 130, style: 'text-align:left;', align: 'center', sort: true }
+            ]]
+        });
+        //监听行单击事件（单击事件为：rowDouble）
+        //table.on('row(container)', function (obj) {
+        //    var data = obj.data;
+        //    conId += data.ID + ",";
+        //    //标注选中样式
+        //    obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');  
+        //});
+
+    });
+    var callbackdata = function () {
+        var SelIdStr = "";
+        var checkData = layui.table.checkStatus('container').data;
+        for (var i = 0; i < checkData.length;i++) {
+            SelIdStr += checkData[i].ID + ",";
+        }
+        return SelIdStr;
+    }
+    </script>

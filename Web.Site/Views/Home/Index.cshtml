@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div style="width:1000px; height:420px; margin-left:auto; margin-right:auto;">
+    <div style="height:20px;"></div>
+    <span class="Title">公司简介</span>
+    <div style="background-color:#f3f2f2; width: 1000px; height: 340px;">
+        @{
+            var Description = Html.GetDescription(2);
+            <div style="float:left; width:400px; height:300px;margin-top:20px;">
+                <img src="@Html.AdminUrl()@Description.TitlePhoto" width="400" height="300" />
+            </div>
+            <div style="float:left; margin-top:35px; margin-left:20px; height:280px; width:550px;">
+                <label style="font-size:18px; font-family:黑体;">@Description.Title</label>
+                <div style="margin-top:10px;">@Description.Keywords</div>
+                <a href="/Home/Show?ChannelID=2" target="_blank" class="more">More</a>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="width:1000px; height:260px; margin-left:auto; margin-right:auto;">
+    <span class="Title">业务板块</span>
+    <div style="display:inline;float:right;"><a href="/Home/ImageList/?ChannelID=3" target="_blank" style="text-decoration-line:none; color:black;">更多介绍>></a></div>
+    <div id="wrapper">
+        <div id="carousel">
+            <ul>
+                @{
+                    foreach (var img in Html.GetSiteImagePageList(3, 20).SiteImageContentList)
+                    {
+                        <li>
+                            <a href="/Home/Show?ChannelID=3&itemid=@img.ID"><img src="@Html.AdminUrl()@img.ImagePath" alt="" /></a>
+                            <span>@img.Title</span>
+                        </li>
+                    }
+                }
+            </ul>
+            <div class="clearfix"></div>
+            <a id="prev" class="prev" href="#"></a>
+            <a id="next" class="next" href="#"></a>
+        </div>
+    </div>
+</div>
+
+<div style="width:1000px; height:210px; margin-left:auto; margin-right:auto; border:0px solid red;">
+    <span class="Title">关于我们</span>
+    <div style="width: 1000px; height: 180px;">
+        @{
+            var m = Html.GetDescription(5);
+            <div style="float:left; width:200px; height:150px; margin-top:10px;">
+                <img src="@Html.AdminUrl()@m.TitlePhoto" width="200" height="150" />
+            </div>
+            <div style="float:left; margin-top:20px; margin-left:10px; height:135px; width:780px;">
+                @Html.Raw(m.Content)
+            </div>
+        }
+    </div>
+</div>

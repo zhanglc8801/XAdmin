@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="~/Script/jquery-3.4.1.min.js"></script>
+    <script src="~/Script/jquery.flexslider-min.js"></script>
+    <script src="~/Script/jquery.carouFredSel-6.0.4-packed.js"></script>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layuiadmin/layui/layui.js"></script>
+</head>
+<body style="background-color:#f6f6f6;">
+    <div style="border:0px solid red; height:60px; width:1000px; margin-left:auto; margin-right:auto;">
+        <div style="float:left; margin-top:10px;">
+            <a href="/"><img src="~/images/logo.png" /></a>
+        </div>
+        <div class="menu" style="float:right; margin-top:5px;">
+            <ul>
+                <li>
+                    <a href="/">主页</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Home/Show?ChannelID=37">服务介绍</a></li>
+                        <li><a href="/Home/Show?ChannelID=2">公司简介</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Arts/Index">演艺节目</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Arts/Index?ChannelID=13">传统节目</a></li>
+                        <li><a href="/Arts/Index?ChannelID=14">创意节目</a></li>
+                        <li><a href="/Arts/Index?ChannelID=15">民俗艺术</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Host/Index">主持人</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Host/Index?ChannelID=16">电视台主持人</a></li>
+                        <li><a href="/Host/Index?ChannelID=17">北京主持人</a></li>
+                        <li><a href="/Host/Index?ChannelID=18">双语主持人</a></li>
+                        <li><a href="/Host/Index?ChannelID=19">地方主持人</a></li>
+                        <li><a href="/Host/Index?ChannelID=20">婚礼主持人</a></li>
+                        <li><a href="/Host/Index?ChannelID=21">带货主持人</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">礼仪模特</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Home/ImageList/?ChannelID=22">中国籍</a></li>
+                        <li style="display:none;"><a href="/Home/ImageList/?ChannelID=23">外籍</a></li>
+                        <li><a href="/Home/ImageList/?ChannelID=24">礼服租赁</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">活动物料</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Home/Show?ChannelID=25">灯光音响租赁</a></li>
+                        <li><a href="/Home/Show?ChannelID=26">舞美搭建</a></li>
+                        <li><a href="/Home/Show?ChannelID=27">摄影摄像</a></li>
+                        <li><a href="/Home/Show?ChannelID=28">化妆师</a></li>
+                        <li><a href="/Home/Show?ChannelID=29">礼品定制</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">活动协助</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Home/Show?ChannelID=30">会议协作</a></li>
+                        <li><a href="/Home/Show?ChannelID=31">婚礼督导</a></li>
+                        <li><a href="/Home/Show?ChannelID=32">团建拓展</a></li>
+                        <li><a href="/Home/Show?ChannelID=33">兼职人员</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">活动策划</a>
+                    <ul style="z-index:5000;">
+                        <li><a href="/Home/Show?ChannelID=34">策划方案</a></li>
+                        <li><a href="/Home/Show?ChannelID=35">视觉设计</a></li>
+                        <li><a href="/Home/Show?ChannelID=36">婚庆策划</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Home/VideoList/?ChannelID=12">经典案例</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flexslider" style="width:1300px; margin-top:-5px;">
+        <ul class="slides">
+            <li><img src="~/images/img1.jpg" alt="" /></li>
+            <li><img src="~/images/img2.jpg" alt="" /></li>
+            <li><img src="~/images/img3.jpg" alt="" /></li>
+            <li><img src="~/images/img4.jpg" alt="" /></li>
+            <li><img src="~/images/img5.jpg" alt="" /></li>
+        </ul>
+    </div>
+
+    <div style="border:0px solid green; background-color:#FFFFFF; width:1300px;height:auto; margin-left:auto; margin-right:auto;">
+        @RenderBody()
+        <div style="clear: both; height: 0; font-size: 1px; line-height: 0px;" title="实现高度自适应"></div>
+    </div>
+
+    <div style="background-color: #0b395b; width:1300px; height: 250px; margin-left: auto; margin-right: auto; margin-top: 0px;">
+        <div style="width: 1000px; height: 250px; margin-left:auto; margin-right:auto;">
+            <div style="width:500px; height:250px; float:left;">
+                <div style="font-size:24px; margin-top:20px; background-image:url(/images/line.png); background-repeat:repeat-x; background-position:bottom; line-height:40px; width:100px;">联系我们</div>
+                <div style="background-image: url('/images/address.png'); background-repeat: no-repeat; margin-top: 20px;">
+                    <p style="margin-left:30px; font-size:18px;">服务时间：2021.8.6</p>
+                </div>
+                <div style="background-image: url('/images/msg.png'); background-repeat: no-repeat; margin-top: 20px;">
+                    <p style="margin-left:30px; font-size:18px;">公司邮箱：515154329@qq.com</p>
+                </div>
+                <div style="background-image: url('/images/phone.png'); background-repeat: no-repeat; margin-top: 20px;">
+                    <p style="margin-left: 30px; font-size: 18px;">服务方式：18845632159</p>
+                </div>
+            </div>
+            <div style="width:480px; height:250px; float:left;">
+                <div style="width:100px; height:100px;margin-top:50px; margin-left:50px; float:left;">
+                    <img src="/images/code1.jpg" style="width:100px;height:100px;" />
+                    <div style="color:#fff; text-align:center;">咨询</div>
+                </div>
+
+                <div style="width: 100px; height: 100px; margin-top: 50px; margin-left: 100px; float: left;">
+                    <img src="/images/code1.jpg" style="width:100px;height:100px;" />
+                    <div style="color:#fff; text-align:center;">公众号</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        layui.config({
+            base: '../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use('index');
+
+        $(document).ready(function () {
+            $('.flexslider').flexslider({
+                directionNav: true,
+                pauseOnAction: false
+            });
+        });
+
+        $(function () {
+            $('#carousel ul').carouFredSel({
+                prev: '#prev',
+                next: '#next',
+                pagination: "#pager",
+                scroll: 1000
+            });
+        });
+    </script>
+</body>
+</html>

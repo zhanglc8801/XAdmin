@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "预定";
+    Layout = null;
+}
+<script src="~/Script/jquery-3.4.1.min.js"></script>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<div class="layui-form" lay-filter="layuiadmin-form-YuDing" id="layuiadmin-form-YuDing">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show" style="background-color:#ffffff;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">预定类别：</label>
+                <input type="hidden" name="ChannelID" value="@ViewBag.ChannelID" />
+                <input type="hidden" name="ContentID" value="@ViewBag.ContentID" />
+                <input type="hidden" name="Status" value="0" />
+                <div class="layui-input-inline input" style="">
+                    <input name="ChannelName" type="text" class="layui-input" value="@ViewBag.ChannelName" disabled="disabled" />
+                </div>
+                <label class="layui-form-label" style="padding-left:0px; width:100px;">预定内容：</label>
+                <div class="layui-input-inline" style="">
+                    <input name="Content" type="text" class="layui-input" value="@ViewBag.Content" disabled="disabled" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">您的姓名：</label>
+                <div class="layui-input-inline input" style="width:505px;">
+                    <input name="Name" type="text" class="layui-input" value="" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">您的电话：</label>
+                <div class="layui-input-inline input" style="width:505px;">
+                    <input name="Phone" type="text" class="layui-input" value="" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">您的微信：</label>
+                <div class="layui-input-inline input" style="width:505px;">
+                    <input name="Wx" type="text" class="layui-input" value="" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="padding-left:0px; width:100px;">您的活动时间：</label>
+                <div class="layui-input-inline" style="width:505px; margin-left:-5px;">
+                    <input name="ActivityTime" type="text" class="layui-input" value="" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">您的预算：</label>
+                <div class="layui-input-inline input" style="width:505px;">
+                    <input name="Yusuan" type="text" class="layui-input" value=""/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">其他需求：</label>
+                <div class="layui-input-inline input" style="width:510px;">
+                    <textarea name="Remark" id="Remark" class="layui-textarea" maxlength="1000" style="width:99%;min-height:10px;"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center; margin-left:0px;">
+                <button type="button" class="layui-btn" lay-submit lay-filter="XAdmin-YuDing-Submit">
+                    <span class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+                <button type="button" class="layui-btn layui-btn-danger" onclick="formClose()">
+                    <span class="layui-icon layui-icon-close"></span>关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'form', 'element'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element;
+        form.on('submit(XAdmin-YuDing-Submit)', function (data) {
+            var field = data.field;
+            $.ajax({
+                type: 'POST',
+                url: '/Home/YuDingAjax',
+                data: field,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        //在父窗口里得到当前iframe层的索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //再执行关闭
+                        parent.layer.close(index);
+                        parent.layer.msg("您的需求我们已收到，我们会尽快与您联系！", { icon: 1 });
+                    }
+                    else {
+                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                }
+            });
+        });
+
+        window.formClose = function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    });
+
+</script>

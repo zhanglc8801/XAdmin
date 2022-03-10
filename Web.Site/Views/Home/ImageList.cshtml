@@ -1,0 +1,25 @@
+﻿@model XAdmin.Model.SiteModel
+@{
+    ViewData["Title"] = "ImageList";
+}
+
+<div style="width:1000px;margin-left:auto; margin-right:auto; border:0px solid blue;">
+    <div style="height:20px;"></div>
+    <span class="Title">@ViewBag.ChannelName</span>
+    <div style="width: 1100px; height:100%">
+        @foreach (var item in Model.ImageList)
+        { 
+        <div style="width: 500px; height: 100px; float: left; border: 1px solid #cfcfcf; margin-right: 10px; margin-bottom: 10px;">
+            <div style="width:150px; height:100px; float:left; line-height:165px; border-right:1px solid #cfcfcf;">
+                <img src="@Html.AdminUrl()@item.ImagePath" style="height:auto;width:100%; max-height:100%;max-width:100%" />
+            </div>
+            <div style="float:left; padding:5px; width:335px; height:90px;">
+                @Html.CutString(item.Abstruct,120,"...")
+            </div>
+            <div style=" float:right; width:40px; height:10px;position:relative;bottom:20px;">
+                <a href="/Home/Show?ChannelID=@item.ChannelID&itemid=@item.ID" target="_blank">详情>></a>
+            </div>
+        </div>
+        }
+    </div>
+</div>

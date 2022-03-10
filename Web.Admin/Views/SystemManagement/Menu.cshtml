@@ -1,0 +1,288 @@
+﻿@{
+    ViewBag.Title = "菜单管理";
+}
+<style>
+    .layui-btn-sm {
+        display: block;
+    }
+</style>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:30px; padding-top:0px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <button id="btnCreateMenu" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon">&#xe654;</i>添加菜单
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnGetChecked" class="layui-btn layui-btn-primary layui-btn-sm get-checked">获取选中</button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe668;</i>展开全部
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnFoldAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe66b;</i>折叠全部
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnRefresh" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe669;</i>刷新
+            </button>
+        </div>
+        <div class="layui-inline">
+            <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字" style="width: 140px;height: 30px;line-height: 30px;padding: 0 5px;" />
+        </div>
+        <div class="layui-inline">
+            <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+</div>
+<table id="demoTreeTb"></table>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tbBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).use(['treeTable'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var util = layui.util;
+        var treeTable = layui.treeTable;
+        // 渲染表格
+        var insTb = treeTable.render({
+            elem: '#demoTreeTb',
+            url: '@Html.RootPath()/SystemManagement/GetMenuList',
+            //toolbar: 'default',
+            height: 'full-10',
+            tree: {
+                iconIndex: 3,
+                isPidData: true,
+                idName: 'MenuID',
+                pidName: 'PMenuID'
+            },
+            method: 'post',
+            cols: [[
+                { title:'序号', type: 'numbers',width:80 },
+                { type: 'checkbox' },
+                { title: 'ID', field: 'MenuID', style: 'text-align:center;', align: 'center', width: 60 },
+                { title: '名称<i class=\"layui-icon\">&#xe642;</i>', field: 'MenuName', style: 'text-align:left;', align: 'left', width: 250, edit: 'text' },
+                { title: '图标', align: 'center', width: 60, templet: '<p><i class="layui-icon {{decodeURI(d.Icon)}}" style="color:{{d.IconColor}}">{{decodeURI(d.Icon)}}</i></p>' },
+                //{ title: '图标', align: 'center', width: 60, templet: '<p><i class="layui-icon {{d.Icon}}" style="color:{{d.IconColor}}">{{d.Icon}}</i></p>' },
+                { title: '地址<i class=\"layui-icon\">&#xe642;</i>', field: 'MenuUrl', width:250, edit: 'text' },
+                { title: '序号<i class=\"layui-icon\">&#xe642;</i>', field: 'SortID', width: 50, align: 'center',  edit: 'text' },
+                { title: '创建时间', width: 160, templet: function (d) { return util.toDateString(d.AddDate); }},
+                { align: 'center', toolbar: '#tbBar', title: '操作', width:120 }
+            ]],
+            style: 'margin-top:0;'
+        });
+
+        // 工具列点击事件
+        treeTable.on('tool(demoTreeTb)', function (obj) {
+            var event = obj.event;
+            if (event === 'del') {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.confirm('确定要删除此菜单吗？', { icon: 3 }, function (index) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Html.RootPath()/SystemManagement/DeleteMenu',
+                            data: { 'KeyStr': data.MenuID },
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.code == "1") {
+                                    layer.msg("已删除！", { icon: 1, offset: 't' });
+                                    table.reload('demoTreeTb', {}); //数据刷新
+                                    obj.del();
+                                }
+                                else {
+                                    layer.msg("删除失败！", { icon: 2, offset: 't' });
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data.msg);
+                            },
+                        });
+                        layer.close(index);
+                    });
+                }
+            } else if (event === 'edit') {
+                layer.open({
+                      type: 2
+                    , title: '修改菜单数据'
+                    , shadeClose: true //点击遮罩区域是否关闭页面
+                    , shade: 0.8  //遮罩透明度
+                    , content: '@Html.RootPath()/SystemManagement/MenuEdit?ID=' + obj.data.MenuID
+                    , maxmin: true
+                    , area: ['650px', '485px']
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'XAdmin-menu-submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                            var field = data.field; //获取提交的字段
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            //field.Icon = encodeURI(field.Icon);
+                            if (field.Status == "on" || field.Status=="value") {
+                                field.Status = true;
+                            }
+                            else {
+                                field.Status = false;
+                            }
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/SystemManagement/SaveMenuAjax',
+                                data: field,
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("操作成功！", { icon: 1,offset:'t' });
+                                        treeTable.reload('demoTreeTb', {}); //数据刷新
+                                    }
+                                    else {
+                                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                            layer.close(index); //关闭弹层
+                        });
+                        submit.trigger('click');
+                    }
+                });
+                obj.update({ authorityName: '新的名称' });
+            }
+        });
+
+        treeTable.on('edit(demoTreeTb)', function (obj) {
+            //console.log(obj);
+            //if (true) {
+            //    layer.tips('格式不正确', $(this), { tips: [1, '#FF5722'] });
+            //    return false;
+            //}
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SystemManagement/UpdateMenuAjax',
+                data: { "MenuID": obj.data.MenuID, "UpdateField": obj.field, "UpdateFieldValue": obj.value},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.msg("操作成功！", { icon: 1, offset: 't' });
+                        treeTable.reload('demoTreeTb'); //数据刷新
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+
+        });
+
+        // 全部展开
+        $('#btnExpandAll').click(function () {
+            insTb.expandAll();
+        });
+
+        // 全部折叠
+        $('#btnFoldAll').click(function () {
+            insTb.foldAll();
+        });
+
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            if (keywords) {
+                insTb.filterData(keywords);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+        $('#btnRefresh').click(function () {
+            insTb.refresh();
+        });
+
+        // 获取选中
+        $('#btnGetChecked').click(function () {
+            layer.alert('<pre>' + JSON.stringify(insTb.checkStatus().map(function (d) {
+                return {
+                    MenuName: d.MenuName,
+                    MenuID: d.MenuID,
+                    LAY_INDETERMINATE: d.LAY_INDETERMINATE
+                };
+            }), null, 3) + '</pre>');
+        });
+
+        //添加菜单
+        $('#btnCreateMenu').click(function () {
+            var IDList = [];
+            var SelectMenuID = "0";//选择多个以第一个选择的为准，如有父级菜单 则以第一个父菜单为准。
+            insTb.checkStatus().map(function (obj) {
+                if (obj.LAY_INDETERMINATE == false) {
+                    IDList.push(obj.MenuID);
+                }
+            });
+            if (IDList.length > 0) {
+                SelectMenuID = IDList[0];
+            }
+            layer.open({
+                type: 2
+                , title: '添加菜单'
+                , shadeClose: true
+                , shade: 0.8
+                , content: '@Html.RootPath()/SystemManagement/MenuEdit?PID=' + SelectMenuID
+                , maxmin: true
+                , area: ['650px', '485px']
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'XAdmin-menu-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        if (field.Status == "on" || field.Status == "value") {
+                            field.Status = true;
+                        }
+                        else {
+                            field.Status = false;
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Html.RootPath()/SystemManagement/SaveMenuAjax',
+                            data: field,
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.code == "1") {
+                                    layer.msg("操作成功！", { icon: 1, offset: 't' });
+                                    treeTable.reload('demoTreeTb', {}); //数据刷新
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data.msg);
+                            },
+                        });
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            });
+        });
+
+    });
+</script>

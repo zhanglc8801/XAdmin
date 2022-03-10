@@ -1,0 +1,6 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 19,
+  "data": [{"authorityId": 2,"authorityName": "用户管理","orderNumber": 2,"menuUrl": "system/user","menuIcon": null,"createTime": "2018/06/29 11:05:41", "authority": null,"checked": 0,"updateTime": "2018/07/13 09:13:42", "isMenu": 0,"parentId": 1,"open": true},{"authorityId": 1,"authorityName": "系统管理","orderNumber": 1,"menuUrl": null,"menuIcon": "layui-icon-set","createTime": "2018/06/29 11:05:41", "authority": null,"checked": 0,"updateTime": "2018/07/13 09:13:42","isMenu": 0,"parentId": -1,"open": true}]
+}

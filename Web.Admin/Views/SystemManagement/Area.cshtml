@@ -1,0 +1,233 @@
+﻿@{
+    ViewBag.Title = "行政区划管理";
+}
+<style>
+    .layui-btn-sm {
+        display: block;
+    }
+</style>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:30px; padding-top:0px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <button id="btnCreateArea" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon">&#xe654;</i>新增区域
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnRefresh" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe669;</i>刷新
+            </button>
+        </div>
+        <div class="layui-inline">
+            <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字" style="width: 140px;height: 30px;line-height: 30px;padding: 0 5px;" />
+        </div>
+        <div class="layui-inline">
+            <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+</div>
+<table id="areaTreeTable"></table>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tbBar">
+    <a class="layui-btn {{d.Status==1?'layui-btn-normal':''}} layui-btn-xs" lay-event="disable">{{d.Status==1 ? '停用':'启用'}}</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).use(['treeTable'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var treeTable = layui.treeTable;
+        // 渲染表格
+        var insTb = treeTable.render({
+            elem: '#areaTreeTable',
+            url: '@Html.RootPath()/SystemManagement/GetAreaList',
+            //toolbar: 'default',
+            height: 'full-10',
+            tree: {
+                iconIndex: 3,
+                isPidData: true,
+                idName: 'ID',
+                pidName: 'ParentID'
+            },
+            method: 'post',
+            cols: [[
+                { title: '序号', type: 'numbers', width: 80  },
+                { type: 'checkbox' },
+                { title: '数据标识', field: 'ID', style: 'text-align:center;', align: 'center', width: 80 },
+                { title: '区域名称<i class=\"layui-icon\">&#xe642;</i>', field: 'AreaName', style: 'text-align:left;', align: 'left', width: 250, edit: 'text' },
+                { title: '区域编码<i class=\"layui-icon\">&#xe642;</i>', field: 'AreaCode', style: 'text-align:left;', align: 'left', width: 250, edit: 'number',max:6 },
+                { title: '级别', field: 'AreaLevelStr', width: 250 },
+                { title: '状态', field: 'StatusStr', width: 60 },
+                { title: '状态', field: 'Status', width: 0, hide: true },
+                { title: '顺序<i class=\"layui-icon\">&#xe642;</i>', field: 'SNumber', width: 50, align: 'center', edit: 'number' },
+                { align: 'center', toolbar: '#tbBar', title: '操作', width:120 }
+            ]],
+            is_cache: true,
+            style: 'margin-top:0;'
+        });
+
+        // 工具列点击事件
+        treeTable.on('tool(areaTreeTable)', function (obj) {
+            var event = obj.event;
+            var field = obj.data;
+            if (event === 'del') {
+                layer.confirm('确定要删除此区域码？隶属于此区域的下级区域也将一起删除。', { icon: 3, title: '删除行政区划' }, function (index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Html.RootPath()/SystemManagement/DeleteAreaAjax',
+                        data: field,
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.result == "success") {
+                                layer.msg(res.msg, { icon: 1, offset: 't' });
+                                treeTable.reload('areaTreeTable', {}); //数据刷新
+                                obj.del();
+                            }
+                            else {
+                                layer.msg(res.msg, { icon: 2, offset: 't' });
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data.msg);
+                        },
+                    });
+                    layer.close(index);
+                });
+            }
+
+            if (event === 'disable') {
+                var msg = "";
+                var tle = "";
+                var SetStatus = false;
+                if (field.Status == true) {
+                    msg = "确定要停用此区域吗？此区域的下级区域也将一起停用。";
+                    tle = "停用行政区划";
+                }
+                else {
+                    msg = "确定要启用此区域吗？此区域的下级区域也将一起启用。";
+                    tle = "启用行政区划";
+                    SetStatus = true;
+                }
+                layer.confirm(msg, { icon: 3, title: tle }, function (index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Html.RootPath()/SystemManagement/SetAreaStatusAjax',
+                        data: { 'ID': field.ID, 'Status': SetStatus },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.result == "success") {
+                                layer.msg(res.msg, { icon: 1, offset: 't' });
+                                treeTable.reload('areaTreeTable', {}); //数据刷新
+                                obj.del();
+                            }
+                            else {
+                                layer.msg(res.msg, { icon: 2, offset: 't' });
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data.msg);
+                        },
+                    });
+                    layer.close(index);
+                });
+            }
+
+        });
+
+        treeTable.on('edit(areaTreeTable)', function (obj) {
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SystemManagement/UpdateAreaAjax',
+                data: { "IntValue": obj.data.ID, "UpdateField": obj.field, "UpdateFieldValue": obj.value},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.result == "success") {
+                        layer.msg("操作成功！", { icon: 1, offset: 't' });
+                        treeTable.reload('areaTreeTable'); //数据刷新
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+
+        });
+
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            if (keywords) {
+                insTb.filterData(keywords);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+        $('#btnRefresh').click(function () {
+            insTb.refresh();
+        });
+
+        //新增行政区划
+        $('#btnCreateArea').click(function () {
+            var IDList = [];
+            var SelectAreaID = "0";//选择多个以第一个选择的为准，如有父级菜单 则以第一个父菜单为准。
+            insTb.checkStatus().map(function (obj) {
+                if (obj.LAY_INDETERMINATE == false) {
+                    IDList.push(obj.ID);
+                }
+            });
+            if (IDList.length > 0) {
+                SelectAreaID = IDList[0];
+            }
+            layer.open({
+                type: 2
+                , title: '新增行政区划'
+                , shadeClose: true
+                , shade: 0.8
+                , content: '@Html.RootPath()/SystemManagement/AreaAdd?PID=' + SelectAreaID
+                , maxmin: true
+                , area: ['550px', '480px']
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LayAdmin-area-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        if (field.AreaLevel == -1) {
+                            layer.msg("请选择行政区域级别", { icon: 7 });
+                            return;
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Html.RootPath()/SystemManagement/SaveAreaAjax',
+                            data: field,
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.result == "success") {
+                                    layer.msg("操作成功！", { icon: 1, offset: 't' });
+                                    treeTable.reload('areaTreeTable', {}); //数据刷新
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data.msg);
+                            },
+                        });
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            });
+        });
+
+    });
+</script>

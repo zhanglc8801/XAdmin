@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "栏目内容管理";
+}
+<div class="layui-layout layui-layout-admin">
+    <!-- 侧边菜单 -->
+    <div class="layui-side layui-side-menu" style="margin-left: 1px;">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" style="margin-top:0px;">
+                @Html.Raw(ViewData["MenuHtml"])
+            </ul>
+        </div>
+    </div>
+    <!-- 主体内容 -->
+    <div class="layui-body" id="LAY_app_body" style="top:0px;">
+        <div class="layadmin-tabsbody-item layui-show">
+            <iframe id="fra" src="/Home/Console" frameborder="0" class="layadmin-iframe"></iframe>
+        </div>
+    </div>
+    <!-- 辅助元素，一般用于移动设备下遮罩 -->
+    <div class="layadmin-body-shade" layadmin-event="shade"></div>
+</div>
+
+<script>
+    function GoToUrl(ChannelId, ContentType) {
+        if (ContentType == 1)
+            fra.src = "/SiteInfoManagement/DescriptionList?id=" + ChannelId;  
+        else if (ContentType == 2)
+            fra.src = "/SiteInfoManagement/NewsList?id=" + ChannelId;
+        else if (ContentType == 3)
+            fra.src = "/SiteInfoManagement/ImageList?id=" + ChannelId;
+        else if (ContentType == 4)
+            fra.src = "/SiteInfoManagement/AudioList?id=" + ChannelId;
+        else if (ContentType == 5)
+            fra.src = "/SiteInfoManagement/VideoList?id=" + ChannelId;
+        else if (ContentType == 6)
+            fra.src = "/SiteInfoManagement/FileList?id=" + ChannelId;
+        else
+            fra.src = "";
+    }
+</script>

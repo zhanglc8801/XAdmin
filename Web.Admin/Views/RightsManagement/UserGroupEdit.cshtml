@@ -1,0 +1,53 @@
+﻿@model XAdmin.Model.Entity.GroupInfo
+@{
+    ViewBag.Title = "编辑用户组";
+}
+<style>
+    .layui-form-label {
+        width:90px;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户组名称：</label>
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="layui-input-inline input">
+                    <input type="text" name="GroupName" lay-verify="required" placeholder="用户组名称" autocomplete="off" class="layui-input" value="@Model.GroupName">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述：</label>
+                <div class="layui-input-block">
+                    <textarea name="Note" id="Note" placeholder="请输入内容" class="layui-textarea" style="width:97%; max-height:60px;">@Model.Note</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="LayAdmin-group-submit" id="LayAdmin-group-submit" value="确认">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+        upload.render({
+            elem: '#layuiadmin-upload-useradmin'
+            , url: layui.setter.base + 'json/upload/demo.js'
+            , accept: 'images'
+            , method: 'get'
+            , acceptMime: 'image/*'
+            , done: function (res) {
+                $(this.item).prev("div").children("input").val(res.data.src)
+            }
+        });
+    })
+</script>

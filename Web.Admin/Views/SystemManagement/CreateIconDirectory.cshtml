@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "创建图标目录";
+}
+<style>
+    .ztree {
+        height: 210px;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-createicondir" id="layuiadmin-form-createicondir">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级目录：</label>
+            <input type="hidden" id="PID" name="PID" value="@ViewBag.PID" />
+            <div class="layui-input-inline" style="width:300px">
+                <input type="text" id="tree" class="layui-input" placeholder="正在加载..." >
+            </div>
+            <div class="layui-input-inline" style="width:90px">
+                <input type="checkbox" name="isroot" id="isroot" lay-skin="primary" lay-filter="lay-isroot" title="根目录"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">目录名称：</label>
+            <div class="layui-input-inline" style="width:300px">
+                <input type="text" name="IconName" lay-verify="required" placeholder="图标存放文件夹" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号：</label>
+            <div class="layui-input-inline" style="width:300px">
+                <input type="text" name="Sort" lay-verify="number" placeholder="" autocomplete="off" class="layui-input" value="0">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="Notes" id="Notes" placeholder="请输入内容" class="layui-textarea" style="width:99%"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="LayAdmin-createicondir-submit" id="LayAdmin-createicondir-submit" value="确认">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element', 'treeSelect'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , treeSelect = layui.treeSelect;
+        treeSelect.render({
+            elem: '#tree',
+            data: '@Html.RootPath()/SystemManagement/MakeIconDirectorySelect',
+            headers: {},
+            type: 'post',
+            placeholder: '输入关键字以查找',
+            search: true,
+            style: {
+                folder: { enable: true },
+                line: { enable: true }
+            },
+            // 点击回调
+            click: function (d) {
+                console.log(d);
+                $('#PID').val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+                $('#tree').removeAttr("placeholder");
+                //console.log(d);
+                //选中节点，根据id筛选
+                if ('@ViewBag.DirID' != '') {
+                    treeSelect.checkNode('tree', @ViewBag.DirID);
+                }
+                //刷新树结构
+                treeSelect.refresh('tree');
+            }
+        });
+
+        form.on('checkbox(lay-isroot)', function (data) {
+            if (data.elem.checked) {
+                $('.layui-treeSelect').attr("style", "display:none");
+            }
+            else {
+                $('.layui-treeSelect').removeAttr("style");
+            }
+        });
+
+    });
+</script>

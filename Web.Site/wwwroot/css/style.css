@@ -1,0 +1,265 @@
+﻿/* ul li以横排显示 */
+
+/* 所有class为menu的div中的ul样式 */
+div.menu ul {
+    list-style: none; /* 去掉ul前面的符号 */
+    margin: 0px; /* 与外界元素的距离为0 */
+    padding: 0px; /* 与内部元素的距离为0 */
+    width: auto; /* 宽度根据元素内容调整 */
+}
+/* 所有class为menu的div中的ul中的li样式 */
+div.menu ul li {
+    float: left; /* 向左漂移，将竖排变为横排 */
+}
+/* 所有class为menu的div中的ul中的a样式(包括尚未点击的和点击过的样式) */
+div.menu ul li a, div.menu ul li a:visited {
+    background-color: #f6f6f6; /* 背景色 */
+    border: 0px #4e667d solid; /* 边框 */
+    color: #000000; /* 文字颜色 */
+    display: block; /* 此元素将显示为块级元素，此元素前后会带有换行符 */
+    line-height: 30px; /* 行高 */
+    padding: 4px 20px; /* 内部填充的距离 */
+    text-decoration: none; /* 不显示超链接下划线 */
+    white-space: nowrap; /* 对于文本内的空白处，不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止。 */
+    font-size: 16px;
+    line-height: 36px;
+}
+/* 所有class为menu的div中的ul中的a样式(鼠标移动到元素中的样式) */
+div.menu ul li a:hover {
+    background-color: #2e97e1; /* 背景色 */
+    color: #FFFFFF; /* 文字颜色 */
+    text-decoration: none; /* 不显示超链接下划线 */
+}
+/* 所有class为menu的div中的ul中的a样式(鼠标点击元素时的样式) */
+div.menu ul li a:active {
+    background-color: #465c71; /* 背景色 */
+    color: #cfdbe6; /* 文字颜色 */
+    text-decoration: none; /* 不显示超链接下划线 */
+}
+
+div.menu ul li ul {
+    position: absolute;
+    border: 1px solid #2e97e1;
+    margin-top: 0px;
+    display: none;
+    width: auto;
+}
+
+div.menu ul li ul li {
+    float: none;
+    background-color: #0066CC;
+}
+
+div.menu ul li:hover ul {
+    display: block;
+}
+
+.more {
+    width: 80px;
+    height: 32px;
+    float: right;
+    margin-top: 200px;
+    border: 0;
+    background-color: #eccd50;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+/*上部轮播图*/
+/* flexslider */
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a, img {
+    border: 0;
+}
+
+body {
+    font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
+}
+
+.flexslider {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    margin-left:auto;
+    margin-right:auto;
+    background: url(/images/loading.gif) 50% no-repeat;
+}
+
+.slides {
+    position: relative;
+    z-index: 1;
+}
+
+.slides li {
+    height: 400px;
+}
+
+.slides li img {
+    width: 100%;
+    height:400px;
+}
+
+.flex-control-nav {
+    position: absolute;
+    bottom: 10px;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+}
+
+.flex-control-nav li {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin: 0 5px;
+    *display: inline;
+    zoom: 1;
+}
+
+.flex-control-nav a {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 40px;
+    overflow: hidden;
+    background: url(/images/dot.png) right 0 no-repeat;
+    cursor: pointer;
+}
+
+.flex-control-nav .flex-active {
+    background-position: 0 0;
+}
+
+.flex-direction-nav {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    top: 45%;
+}
+
+.flex-direction-nav li a {
+    display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    cursor: pointer;
+    position: absolute;
+}
+
+.flex-direction-nav li a.flex-prev {
+    left: 40px;
+    background: url(/images/prev.png) center center no-repeat;
+}
+
+.flex-direction-nav li a.flex-next {
+    right: 40px;
+    background: url(/images/next.png) center center no-repeat;
+}
+
+/*带有蓝色带子的标题样式*/
+span.Title {
+    background-image: url(/images/flag.png);
+    background-repeat-x:no-repeat;
+    font-size: 24px;
+    padding-left:10px;
+}
+
+    span.Title a {
+        text-decoration:none;
+    }
+    /*业务板块 轮播图*/
+    #wrapper {
+        width: 980px;
+        height: 250px;
+        position: absolute;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+#carousel {
+    width: 980px;
+    position: vrelative;
+}
+
+    #carousel ul {
+        list-style: none;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    #carousel li {
+        background: transparent url(/images/carousel_polaroid.png) no-repeat 0 0;
+        font-size: 40px;
+        color: #999;
+        text-align: center;
+        display: block;
+        width: 232px;
+        height: 178px;
+        padding: 0;
+        margin: 6px;
+        float: left;
+        position: relative;
+    }
+
+        #carousel li img {
+            width: 201px;
+            height: 127px;
+            margin-top: 14px;
+        }
+
+        #carousel li span {
+            background: transparent url(images/carousel_shine.png) no-repeat 0 0;
+            display: block;
+            overflow: hidden;
+            width: 201px;
+            height: 127px;
+            position: absolute;
+            z-index: 2;
+            top: 160px;
+            left: 16px;
+            font-size:14px;
+        }
+
+.clearfix {
+    float: none;
+    clear: both;
+}
+
+#carousel .prev, #carousel .next {
+    background: transparent url(/images/carousel_control.png) no-repeat 0 0;
+    display: block;
+    overflow: hidden;
+    width: 15px;
+    height: 21px;
+    margin-left: 10px;
+    position: absolute;
+    top: 70px;
+}
+
+#carousel .prev {
+    background-position: 0 0;
+    left: -30px;
+}
+
+#carousel .prev:hover {
+    left: -31px;
+}
+
+#carousel .next {
+    background-position: -18px 0;
+    right: -20px;
+}
+
+#carousel .next:hover {
+    right: -21px;
+}

@@ -1,0 +1,20 @@
+{
+  "BasicConfig": {
+    "SiteID": "zhanglc",
+    "SiteName": "XAdmin",
+    "SiteDomain": "",
+    "RootPath": "",
+    "APIHost": "http://localhost:19774/",
+    //"APIHost": "http://115.28.139.36:9000/",
+    "AdminUrl": "http://115.28.139.36:9001"
+  },
+  "MoreConfig": {
+    "SiteKeywords": "",
+    "SiteDescription": "",
+    "SiteCopyright": "",
+    "ICP": "",
+    "StatisticCode": "",
+    "MaxLoginErrCount": "",
+    "LockTime": ""
+  }
+}

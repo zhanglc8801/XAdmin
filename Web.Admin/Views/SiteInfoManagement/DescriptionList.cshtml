@@ -1,0 +1,287 @@
+﻿@model XAdmin.Model.Entity.SiteChannel_DescriptionContent
+@{
+    ViewBag.Title = "描述类列表页";
+}
+
+<div class="layui-form" lay-filter="layuiadmin-form-NewsEdit" id="layuiadmin-form-NewsEdit" style="height:860px; overflow-y:auto;">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题：</label>
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <input type="hidden" name="ChannelID" value="@Model.ChannelID" />
+                <div class="layui-input-inline input" style="width:546px;">
+                    <input type="text" name="Title" lay-verify="required" placeholder="标题" autocomplete="off" class="layui-input" value="@Model.Title">
+                </div>
+                <div class="layui-input-inline" style="width:80px; margin-right:0px;">
+                    @{
+                        if (Model.Status == true || Model.Status == null)
+                        {
+                            <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" checked="checked" lay-filter="StatusChange">
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" lay-filter="StatusChange">
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题属性：</label>
+                <div class="layui-input-inline" style="width:600px;">
+                    <input type="hidden" id="TitleColor" name="TitleColor" value="@Model.TitleColor" />
+                    <div id="TitleColorPicker" title="设置标题颜色"></div>
+                    @{
+                        if (Model.IsBold != null && Model.IsBold.Value)
+                        {
+                            <div style="position:absolute; display:inline;margin-left:10px;"><input type="checkbox" name="IsBold" title="粗体" checked /></div>
+                        }
+                        else
+                        {
+                            <div style="position:absolute; display:inline;margin-left:10px;"><input type="checkbox" name="IsBold" title="粗体" /></div>
+                        }
+                        if (Model.IsItalics != null && Model.IsItalics.Value)
+                        {
+                            <div style="position:absolute; display:inline; margin-left:110px;"><input type="checkbox" name="IsItalics" title="斜体" checked /></div>
+                        }
+                        else
+                        {
+                            <div style="position:absolute; display:inline;margin-left:110px;"><input type="checkbox" name="IsItalics" title="斜体" /></div>
+                        }
+                    }
+                </div>
+
+                <div class="layui-input-inline" style="position:absolute;margin-left:-350px; margin-top:5px;">
+                    <button type="button" id="UpTitPhoto" class="layui-btn layui-btn-danger" style="padding:5px 8px 5px 8px;height:28px; line-height:3px;"><i class="layui-icon"></i>标题图片</button>
+                    <input id="TitlePhoto" name="TitlePhoto" type="hidden" value="@Model.TitlePhoto" />
+                    <a id="PreviewImg" href="javascript:void(0)" style="display:none;">预览</a>
+                    <a id="DeleteImg" href="javascript:void(0)" style="display:none;">删除</a>
+                </div>
+            </div>
+            
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字：</label>
+                <div class="layui-input-block">
+                    <textarea name="Keywords" id="Keywords" placeholder="关键字" class="layui-textarea layext-text-tool" maxlength="1000" style="width:99%; max-height:60px;">@Model.Keywords</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">内容：</label>
+                <div class="layui-input-block">
+                    <textarea name="Content" id="Content" placeholder="内容" class="layui-textarea layext-text-tool" style="width:99%; max-height:60px;">@Model.Content</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit lay-filter="LayAdmin-desc-Submit">
+                    <span class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+                <button type="button" class="layui-btn layui-btn-danger" onclick="refresh()">
+                    <span class="layui-icon layui-icon-refresh"></span>重置
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).extend({
+        index: 'lib/index', textool: 'textool/textool.min', tinymce: 'tinymce/tinymce'
+    }).use(['index', 'form','element','upload', 'colorpicker', 'textool', 'tinymce'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , upload = layui.upload
+            , colorpicker = layui.colorpicker
+            , textool = layui.textool
+            , tinymce = layui.tinymce;
+
+        //获取URL参数值
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+
+        form.on('submit(LayAdmin-desc-Submit)', function (data) {
+            var field = data.field;
+            if (field.Status == "on") { field.Status = true; } else { field.Status = false; }
+            if (field.IsBold == "on") { field.IsBold = true; } else { field.IsBold = false; }
+            if (field.IsItalics == "on") { field.IsItalics = true; } else { field.IsItalics = false; }
+            field.Content = edit.getContent();
+            field.ChannelID = getQueryString("id");
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SiteInfoManagement/SaveDescriptionAjax',
+                data: field,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.msg("操作成功！", { icon: 1, offset: 't' });
+                    }
+                    else {
+                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                }
+            });
+        });
+
+        window.refresh = function () {
+            alert("refresh");
+        }
+
+        colorpicker.render({
+            elem: '#TitleColorPicker' //绑定元素
+            , color: '@Model.TitleColor' //默认颜色
+            , change: function (color) { //颜色改变的回调
+                $("#TitleColor").val(color);
+                $(".layui-iconpicker-icon").attr("style", "color:" + color);
+            }
+        });
+
+        upload.render({
+            elem: '#UpTitPhoto'
+            , url: '/FileHandle/UpTitlePhoto'
+            , size: 4096 //限制文件大小，单位 KB
+            , done: function (res) {
+                layer.msg('上传成功');
+                $("#PreviewImg").removeAttr("style");
+                $("#DeleteImg").removeAttr("style");
+                $("#DeleteImg").html("删除");
+                $("#PreviewImg").attr("href", "javascript:ShowImg('" + res.data + "','" + res.width + "','" + res.height + "')");
+                $("#DeleteImg").attr("href", "javascript:DeleteImg('" + res.data + "')");
+                $("#TitlePhoto").val(res.data);
+            }
+        });
+
+        textool.init({
+            eleId: 'Keywords',
+            tools: ['count', 'copy', 'clear'],
+            tipType: 'laytips',
+            tipColor: '#01AAED',
+            zIndex: 1000
+        });
+
+        var edit = tinymce.render({
+            elem: "#Content"
+            , height: 400
+            , images_upload_url: '@Html.RootPath()/FileHandle/TinymceUpImage'
+            // ...
+            // 其余配置可参考官方文档 https://fly.layui.com/extend/textool/#doc
+
+        }, function (opt) {
+            //加载完成后回调
+        });
+
+        tinymce.init({
+            selector: '#Content',
+            plugins: "code image axupimgs",
+            toolbar: "code axupimgs",
+            images_upload_base_path: '/demo',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '/FileHandle/TinymceUpImage');
+                xhr.onload = function () {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name);
+                xhr.send(formData);
+            }
+        });
+
+    });
+
+    function ShowImg(src, width, height) {
+        if (width > 1000) {
+            width = width / 2;
+            height = height / 2;
+        }
+        if (width < 50) {
+            width = width * 2;
+            height = height * 2;
+        }
+        //检查图片是否存在
+        $.ajax({
+            type: 'POST',
+            url: '@Html.RootPath()/FileHandle/Exists',
+            data: { 'filePath': src },
+            dataType: 'json',
+            success: function (res) {
+                if (res.data == "1") {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 1,
+                        shadeClose: true,
+                        area: [width + 'px', height + 'px'], //宽高
+                        content: "<img width='" + width + "' height='" + height + "'controls=\"controls\" src=" + src + " />"
+                    });
+                }
+                else {
+                    layer.msg("操作失败！查看的图片不存在。", { icon: 2, offset: 't' });
+                }
+            },
+            error: function (data) {
+                console.log(data.msg);
+            },
+        });
+    }
+
+    function DeleteImg(src) {
+        layer.confirm('确定要删除标题图片吗？', { icon: 3 }, function (index) {
+            $("#TitlePhoto").val("");
+            $("#PreviewImg").attr("style", "display:none;");
+            $("#DeleteImg").removeAttr("href");
+            $("#DeleteImg").html("已删除");
+            layer.close(index);
+        });
+    }
+
+    var titlePhoto = "@Model.TitlePhoto";
+    if (titlePhoto!="") {
+        var width = 600;
+        var height = 300;
+        $.ajax({
+            type: 'POST',
+            url: '@Html.RootPath()/FileHandle/GetImageSize',
+            data: { 'filePath': titlePhoto },
+            dataType: 'json',
+            success: function (res) {
+                width = res.width;
+                height = res.height;
+                $("#PreviewImg").removeAttr("style");
+                $("#DeleteImg").removeAttr("style");
+                $("#DeleteImg").html("删除");
+                $("#PreviewImg").attr("href", "javascript:ShowImg('" + titlePhoto + "','" + width + "','" + height + "')");
+                $("#DeleteImg").attr("href", "javascript:DeleteImg('" + titlePhoto + "')");
+            },
+            error: function (data) {
+                console.log(data.msg);
+            }
+        });
+    }
+
+</script>

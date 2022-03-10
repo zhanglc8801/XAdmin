@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "栏目管理";
+}
+<style>
+    .layui-btn-sm {
+        display: block;
+    }
+</style>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:30px; padding-top:0px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <button id="btnCreateChannel" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon">&#xe654;</i>添加栏目
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe668;</i>展开全部
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnFoldAll" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe66b;</i>折叠全部
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button id="btnRefresh" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe669;</i>刷新
+            </button>
+        </div>
+        <div class="layui-inline">
+            <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字" style="width: 140px;height: 30px;line-height: 30px;padding: 0 5px;" />
+        </div>
+        <div class="layui-inline">
+            <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+</div>
+<table id="channelTable"></table>
+
+@*状态模板*@
+<script type="text/html" id="StatusTpl">
+    <input type="checkbox" name="Status" value="{{d.ID}}" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusDemo" {{ d.Status == 1 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="IsNavTpl">
+    <input type="checkbox" name="IsNav" value="{{d.ID}}" lay-skin="switch" lay-text="是|否" lay-filter="IsNavDemo" {{ d.IsNav == 1 ? 'checked' : '' }}>
+</script>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tbBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).use(['treeTable'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var util = layui.util;
+        var treeTable = layui.treeTable;
+        // 渲染表格
+        var insTb = treeTable.render({
+            elem: '#channelTable',
+            url: '@Html.RootPath()/SiteInfoManagement/GetChannelList',
+            //toolbar: 'default',
+            height: 'full-10',
+            tree: {
+                iconIndex: 3,
+                isPidData: true,
+                idName: 'ID',
+                pidName: 'ParentID'
+            },
+            method: 'post',
+            cols: [[
+                { title:'序号', type: 'numbers',width:80 },
+                { type: 'checkbox' },
+                { title: 'ID', field: 'ID', style: 'text-align:center;', align: 'center', width: 60 },
+                { title: '栏目名称', field: 'Name', style: 'text-align:left;', align: 'left', width: 250 },
+                { title: '允许编辑角色', field: 'RoleNames', width:250 },
+                {
+                    title: '内容类型', field: 'ContentType', width: 150, templet: function (d) {
+                        switch (d.ContentType) {
+                            case 1:return "描述类";break;
+                            case 2:return "列表类";break;
+                            case 3:return "图片类";break;
+                            case 4:return "音频类";break;
+                            case 5: return "视频类"; break;
+                            case 6: return "文件类"; break;
+                            default:return "默认类别";
+                        }
+                    }
+                },
+                { title: '导航栏目', field: 'IsNav', width: 100, templet: '#IsNavTpl', unresize: true },
+                { title: '状态', field: 'Status',width: 100, templet: '#StatusTpl', unresize: true },
+                { title: '创建时间', width: 160, templet: function (d) { return util.toDateString(d.AddDate); } },
+                { title: '序号<i class=\"layui-icon\">&#xe642;</i>', field: 'SortID', width: 50, align: 'center', edit: 'text' },
+                { align: 'center', toolbar: '#tbBar', title: '操作', width:120 }
+            ]],
+            style: 'margin-top:0;'
+        });
+
+        // 工具列点击事件
+        treeTable.on('tool(channelTable)', function (obj) {
+            var event = obj.event;
+            if (event === 'del') {
+                layer.msg('删除成功');
+                obj.del();
+            } else if (event === 'edit') {
+                layer.open({
+                      type: 2
+                    , title: '修改栏目信息'
+                    , shadeClose: true //点击遮罩区域是否关闭页面
+                    //, shade: 0.8  //遮罩透明度
+                    , skin: 'layui-layer-rim' //加上边框
+                    , content: '@Html.RootPath()/SiteInfoManagement/ChannelEdit?ID=' + obj.data.ID
+                    , maxmin: true
+                    , area: ['700px', '540px']
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'LayAdmin-channel-submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                            var field = data.field; //获取提交的字段
+                            if (field.ContentType == "") {
+                                layer.msg("请选择内容类型！");
+                                return;
+                            }
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            if (field.Status == "on") { field.Status = true; } else { field.Status = false; }
+                            if (field.IsNav == "on") { field.IsNav = true; } else { field.IsNav = false; }
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/SiteInfoManagement/SaveChannelAjax',
+                                data: field,
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("操作成功！", { icon: 1,offset:'t' });
+                                        treeTable.reload('channelTable', {}); //数据刷新
+                                    }
+                                    else {
+                                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                            layer.close(index); //关闭弹层
+                        });
+                        submit.trigger('click');
+                    }
+                });
+                obj.update({ authorityName: '新的名称' });
+            }
+        });
+
+        // 全部展开
+        $('#btnExpandAll').click(function () {
+            insTb.expandAll();
+        });
+
+        // 全部折叠
+        $('#btnFoldAll').click(function () {
+            insTb.foldAll();
+        });
+
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            if (keywords) {
+                insTb.filterData(keywords);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+        $('#btnRefresh').click(function () {
+            insTb.refresh();
+        });
+
+        //添加栏目
+        $('#btnCreateChannel').click(function () {
+            var IDList = [];
+            var SelectID = "0";//选择多个以第一个选择的为准，如有父级菜单 则以第一个父菜单为准。
+            insTb.checkStatus().map(function (obj) {
+                if (obj.LAY_INDETERMINATE == false) {
+                    IDList.push(obj.ID);
+                }
+            });
+            if (IDList.length > 0) {
+                SelectID = IDList[0];
+            }
+            layer.open({
+                type: 2
+                , title: '添加栏目'
+                , shadeClose: true
+                , shade: 0.8
+                , content: '@Html.RootPath()/SiteInfoManagement/ChannelEdit?PID=' + SelectID
+                , maxmin: true
+                , area: ['700px', '540px']
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LayAdmin-channel-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        if (field.ContentType == "") {
+                            layer.msg("请选择内容类型！");
+                            return;
+                        }
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        if (field.Status == "on") { field.Status = true; } else { field.Status = false; }
+                        if (field.IsNav == "on") { field.IsNav = true; } else { field.IsNav = false; }
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Html.RootPath()/SiteInfoManagement/SaveChannelAjax',
+                            data: field,
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.code == "1") {
+                                    layer.msg("操作成功！", { icon: 1, offset: 't' });
+                                    treeTable.reload('channelTable', {}); //数据刷新
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data.msg);
+                            },
+                        });
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            });
+        });
+
+        //监听状态操作
+        form.on('switch(StatusDemo)', function (data) {
+            var status = false;
+            if (data.elem.checked) {
+                status = true;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SiteInfoManagement/ChangeChannelStatus',
+                data: { 'ID': this.value, 'Name': 'Status', 'Status': status },//Name属性用于区分更新的是Status还是IsNav
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.tips('操作成功', data.othis);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+
+        //监听状态操作
+        form.on('switch(IsNavDemo)', function (data) {
+            var IsNav = false;
+            if (data.elem.checked) {
+                IsNav = true;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SiteInfoManagement/ChangeChannelStatus',
+                data: { 'ID': this.value, 'Name': 'IsNav', 'IsNav': IsNav },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.tips('操作成功', data.othis);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+
+    });
+</script>

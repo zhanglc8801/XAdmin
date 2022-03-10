@@ -1,0 +1,137 @@
+﻿@model XAdmin.Model.SiteModel
+@{
+    ViewData["Title"] = "演艺节目";
+}
+
+<script src="~/Script/jquery/1.9.1/jquery.js"></script>
+<link href="~/slideTab/css/slide.css" rel="stylesheet" />
+<script src="~/slideTab/js/slide.js"></script>
+
+<div style="width:1300px;margin-left:auto; margin-right:auto; border:0px solid blue;">
+    <div class="slideTab">
+        <div class="title cf">
+            <h2 class="fl">演艺节目</h2>
+            <ul class="title-list fr cf">
+                <li id="channel13" class="on">传统节目</li>
+                <li id="channel14">创意节目</li>
+                <li id="channel15">民俗艺术</li>
+                <p><b></b></p>
+            </ul>
+        </div>
+        <div class="product-wrap">
+            <!--传统节目-->
+            <div id="div13" class="product show">
+                <ul id="ul13" class="cf">
+                </ul>
+                <div id="page13" style="position:relative;left:40%;top:555px;"></div>
+            </div>
+            <!--创意节目-->
+            <div id="div14" class="product">
+                <ul id="ul14" class="cf"></ul>
+                <div id="page14" style="position:relative;left:40%;top:555px;"></div>
+            </div>
+            <!--民俗艺术-->
+            <div id="div15" class="product">
+                <ul id="ul15" class="cf"></ul>
+                <div id="page15" style="position:relative;left:40%;top:555px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var ChannelID = "@ViewBag.ChannelID";
+        $("#channel13").removeClass("on");
+        $("#channel" + ChannelID).addClass("on");
+        $("#div13").removeClass("show");
+        $("#div" + ChannelID).addClass("show");
+
+        var liindex = $('.on').index();
+        $(this).addClass('on').siblings().removeClass('on');
+        $('.product-wrap div.product').eq(liindex).fadeIn(150).siblings('div.product').hide();
+        var liWidth = $('.title-list li').width();
+        $('.slideTab .title-list p').stop(false, true).animate({ 'left': liindex * liWidth + 'px' }, 300);
+    });
+</script>
+
+<script>
+    $(function () {
+        initLayPage(null, 13);
+        initLayPage(null, 14);
+        initLayPage(null, 15);
+    });
+
+    function initLayPage(pageConf, channelID) {
+            if (!pageConf) {
+                pageConf = {};
+                pageConf.ID = channelID;
+                pageConf.page = 1;
+                pageConf.limit = 4;
+            }
+            $.post("/Host/GetImagePageList?ID=" + channelID, pageConf, function (data) {
+                layui.config({
+                    base: '../layuiadmin/' //静态资源所在路径
+                }).extend({
+                    index: 'lib/index' //主入口模块
+                }).use(['laypage'], function () {
+                    var page = layui.laypage;
+                    page.render({
+                        elem: 'page' + pageConf.ID,
+                        count: data.count,
+                        curr: pageConf.page,
+                        limit: pageConf.limit,
+                        first: "首页",
+                        last: "尾页",
+                        jump: function (obj, first) {
+                            if (!first) {
+                                pageConf.page = obj.curr;
+                                pageConf.limit = obj.limit;
+                                initLayPage(pageConf);
+                            }
+                        }
+                    });
+                    fillData(data.list, pageConf.ID);
+                })
+            });
+        }
+
+        function fillData(data, channelID) {
+            $("#ul" + channelID).html("");
+            var html = "";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li style='border-color:rgb(250, 250, 250);' onmouseover='mouseover(this)' onmouseout='mouseout(this)'>";
+                html += "<div style='float:left;'>";
+                html += "<a href='/Home/Show?ChannelID=21&itemid=" + data[i].ID + "' class='imgwrap' target='_blank'><img src='@Html.AdminUrl()" + data[i].ImagePath + "' style='width:200px; height:250px;'></a>";
+                html += "</div><div style='width:370px;float:left;margin-top:5px;'>";
+                html += "<p>名称：" + data[i].Title + "</p><p>时长：" + data[i].LinkUrl + "</p><p>费用：" + data[i].Author+"</p>";
+                html += "<p>简介：" + data[i].Abstruct + "</p></div>";
+                html += "<div style='position:relative;top:105px;left:300px;'>";
+                html += "<input type='button' value='点击预定' onclick='yuding(" + channelID+"," + data[i].ID+")' style='border:0px;background-color:#eccd50;width:70px;height:32px;cursor:pointer;'/>";
+                html += "</div >";
+                html += "</li>";
+            }
+            $("#ul" + channelID).html(html);
+        }
+
+    function yuding(ChannelID, id) {
+        layer.open({
+            type: 2
+            , title: '预定'
+            , shadeClose: true //点击遮罩区域是否关闭页面
+            , shade: 0.8  //遮罩透明度
+            , content: '/Home/YuDing?ChannelID=' + ChannelID + '&itemid=' + id
+            , maxmin: true
+            //, offset:'l'
+            , area: ['660px', '500px']
+        });
+    }
+
+    function mouseover(obj) {
+        $(obj).css("box-shadow","0 0 5px #ff6600");
+    }
+
+    function mouseout(obj) {
+        $(obj).css("box-shadow","");
+    }
+</script>

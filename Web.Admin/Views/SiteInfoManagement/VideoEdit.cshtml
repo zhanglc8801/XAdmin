@@ -1,0 +1,348 @@
+﻿@model XAdmin.Model.Entity.SiteChannel_VideoContent
+@{
+    ViewBag.Title = "图片类内容新增/修改页";
+}
+<link href="~/WebUploader/webuploader.css" rel="stylesheet" />
+<link href="~/WebUploader/style.css" rel="stylesheet" />
+<div class="layui-form" lay-filter="layuiadmin-form-ImageEdit" id="layuiadmin-form-ImageEdit">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item">
+                <label class="layui-form-label">视频上传：</label>
+                <div class="layui-input-inline">
+                    <div id="container">
+                        <div id="uploader">
+                            <div class="queueList" style="width:680px;">
+                                <div id="filePicker"></div>
+                                <div id="filePicker2"></div><div class="uploadBtn" style="margin-left:0px; display:none;">开始上传</div>
+                            </div>
+                            <div>
+                                <img src="~/WebUploader/Delete.gif" title="删除" class="delete" style="display:none; cursor:pointer; position:absolute; top:8px; left:413px;" />
+                            </div>
+                            <div class="statusBar" style="display:none;">
+                                <div class="progress">
+                                    <span class="text">0%</span>
+                                    <span class="percentage" style="display:none;"></span>
+                                </div>
+                                <div class="info"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="VideoImage" name="VideoImage" type="hidden" value="@Model.VideoImage" />
+                    <input id="VideoPath" name="VideoPath" type="hidden" value="@Model.VideoPath" />
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="height:195px;">
+                <div class="layui-input-inline" style=" width:99%;">
+                    <div style="width:600px; height:204px; float:left; border:0px solid red;">
+                        <label class="layui-form-label">标题：</label>
+                        <input type="hidden" name="ID" value="@Model.ID" />
+                        <input type="hidden" name="ChannelID" value="@Model.ChannelID" />
+                        <div class="layui-input-inline input" style="width:400px;">
+                            <input type="text" id="Title" name="Title" lay-verify="required" placeholder="视频标题" autocomplete="off" class="layui-input" value="@Model.Title">
+                        </div>
+                        <div class="layui-input-inline" style="width:80px; margin-right:0px;">
+                            @{
+                                if (Model.Status == true || Model.Status == null)
+                                {
+                                    <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" checked="checked" lay-filter="StatusChange">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" lay-filter="StatusChange">
+                                }
+                            }
+                        </div>
+                        <div class="layui-form-item"></div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">来源：</label>
+                            <div class="layui-input-inline input" style="width:270px;">
+                                <input type="text" name="Source" placeholder="来源" autocomplete="off" class="layui-input" value="@Model.Source">
+                            </div>
+                            <label class="layui-form-label" style="padding-left:0px; width:50px;">作者：</label>
+                            <div class="layui-input-inline input" style="width:123px;">
+                                <input type="text" name="Author" placeholder="作者" autocomplete="off" class="layui-input" value="@Model.Author">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">摘要：</label>
+                            <div class="layui-input-block" style="width:474px; height:160px;">
+                                <textarea name="Abstruct" id="Abstruct" placeholder="摘要" class="layui-textarea layext-text-tool" maxlength="1000" style="width:99%;">@Model.Abstruct</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:right;width:200px; height:200px;line-height:200px; border:1px solid gray; margin-left:10px;">
+                        <img id="videoview" src="@Model.VideoImage" style="height:auto;width:100%; max-height:100%;max-width:100%" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="float:right; width:200px;text-align:center;">
+                <a id="PreviewVideo" href="javascript:void(0)" style="display:none;">播放</a>
+                <a id="DeleteVideo" href="javascript:void(0)" style="display:none;">删除</a>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">内容：</label>
+                <div class="layui-input-block">
+                    <textarea name="Content" id="Content" placeholder="内容" class="layui-textarea layext-text-tool" style="width:99%; max-height:60px;">@Model.Content</textarea>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit lay-filter="XAdmin-Video-Submit">
+                    <span class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+                <button type="button" class="layui-btn layui-btn-danger" onclick="formClose()">
+                    <span class="layui-icon layui-icon-close"></span>关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/WebUploader/jquery.js"></script>
+<script src="~/WebUploader/webuploader-v0.1.6.js"></script>
+<script src="~/WebUploader/upload.js"></script>
+
+<script type="text/javascript">
+    window.Global = window.Global || {};
+    Global.FileQueueds = [];
+    Global.GetFileQueued = function (id) {
+        var res = [];
+        $.each(Global.FileQueueds, function (idx, row) {
+            if (row.id == id) {
+                res = row;
+            }
+        })
+        return res;
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+        var _chunk = 0;
+        WebUploader.Uploader.register({
+            "before-send-file": "beforeSendFile",
+            "before-send": "beforeSend",
+            "after-send-file": "afterSendFile"
+        }, {
+            beforeSendFile: function (file) {
+                //console.info('beforeSendFile', Global.FileQueueds, file);
+                $.each(Global.FileQueueds, function (idx, row) {
+                    if (row.id == file.id) {
+                        _chunk = row.chunk;
+                    }
+                });
+            },
+            beforeSend: function (block) {
+                var blob = block.blob.getSource(),
+                    deferred = $.Deferred();
+                //console.info('blob', block);
+                //根据md5与服务端匹配，如果重复，则跳过。 webuploader-v0.1.6.js Line:3375 CuteFile
+                if (block.chunk < _chunk) {
+                    deferred.reject();
+                }
+                else {
+                    deferred.resolve();
+                }
+                return deferred.promise();
+            },
+            afterSendFile: function (file) {
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    //这是上传文件成功后(文件已合并)的回调事件
+    function UploadSuccessCallback(file, md5, savePath, virtualPath) {
+        console.info('UploadSuccessCallback', file);
+        var data = {
+            Name: file.name,
+            Size: file.size,
+            Extension: file.ext
+        };
+        $.ajax({
+            url: '/FileHandle/AddUploadRecord',
+            type: 'post',
+            data: { fileName: data.Name, fileSize: data.Size, fileExt: data.Extension, fileMd5: md5, filePath: decodeURIComponent(savePath), virtualPath: decodeURIComponent(virtualPath) },
+            dataType: 'json',
+            success: function (res) {
+                //console.info(data);
+                if (res.code < 0) {
+                    alert(res.errmsg);
+                }
+                else {
+                    $("#Title").val(data.Name);
+                    $("#PreviewVideo").removeAttr("style");
+                    //$("#DeleteVideo").removeAttr("style");
+                    //$("#DeleteVideo").html("删除");
+                    $("#videoview").attr("src", res.Thumbnail);
+                    $("#PreviewVideo").attr("href", "javascript:Play('" + decodeURIComponent(virtualPath) + "','" + res.width + "','" + res.height + "')");
+                    //$("#DeleteVideo").attr("href", "javascript:DeleteVideo('" + decodeURIComponent(savePath) + "')");
+                    $("#VideoImage").val(res.Thumbnail);
+                    $("#VideoPath").val(decodeURIComponent(virtualPath));
+                    //alert(data.Thumbnail);
+                    //alert('文件[' + file.name + ']已上传并提交，请耐心等待管理员的审核');
+                    //alert("文件路径：" + decodeURIComponent(savePath));
+                    $('.pop-window0 .pop-close').click();
+                }
+            }
+        });
+    };
+</script>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/'
+    }).extend({
+        index: 'lib/index', textool: 'textool/textool.min', tinymce: 'tinymce/tinymce', ckplayer: 'ckplayer/ckplayer'
+    }).use(['index', 'form', 'element', 'upload', 'textool', 'tinymce','ckplayer'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , textool = layui.textool
+            , tinymce = layui.tinymce
+            , ckplayer = layui.ckplayer;
+        form.on('submit(XAdmin-Video-Submit)', function (data) {
+            var field = data.field;
+            if (field.Status == "on") { field.Status = true; } else { field.Status = false; }
+            if (field.Target == "on") { field.Target = true; } else { field.Target = false; }
+            field.Content = edit.getContent();
+            if ($("#VideoPath").val() == "") {
+                layer.msg("请上传视频");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SiteInfoManagement/SaveVideoInfoAjax',
+                data: field,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.msg(res.msg, { icon: 1, offset: 't' });
+                        //在父窗口里得到当前iframe层的索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //再执行关闭
+                        parent.layer.close(index);
+                        parent.layui.table.reload('VideoList');
+                        parent.layer.msg(res.msg, { icon: 1, offset: 't' });
+                    }
+                    else {
+                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                }
+            });
+        });
+
+        window.formClose = function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+
+        textool.init({
+            eleId: 'Abstruct',
+            tools: ['count', 'copy', 'clear'],
+            tipType: 'laytips',
+            tipColor: '#01AAED',
+            zIndex: 1000
+        });
+
+        var edit = tinymce.render({
+            elem: "#Content"
+            , height: 335
+            , images_upload_url: '@Html.RootPath()/FileHandle/TinymceUpImage'
+            // ...
+            // 其余配置可参考官方文档 https://fly.layui.com/extend/textool/#doc
+        }, function (opt) {
+            //加载完成后回调
+        });
+        tinymce.init({
+            selector: '#Content',
+            plugins: "code image axupimgs",
+            toolbar: "code axupimgs",
+            images_upload_base_path: '/demo',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '/FileHandle/TinymceUpImage');
+                xhr.onload = function () {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name);
+                xhr.send(formData);
+            }
+        });
+    });
+
+    function Play(src, width, height) {
+        if (width > 1920) {
+            width = width / 2;
+            height = height / 2;
+        }
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1,
+            shadeClose: true,
+            area: [parseInt(width) + 5 + 'px', parseInt(height)+5 + 'px'], //宽高
+            content: "<video width='" + width + "' height='" + height + "' controls autoplay='autoplay'><source src='" + src + "' type='video/mp4'></video>"
+        });
+    }
+
+    function DeleteVideo(src) {
+        layer.confirm('确定要删除此视频吗？', { icon: 3 }, function (index) {
+            $("#VideoImage").val("");
+            $("#VideoPath").val("");
+            $("#videoview").attr("src","");
+            $("#PreviewVideo").attr("style", "display:none;");
+            $("#DeleteVideo").removeAttr("href");
+            $("#DeleteVideo").html("已删除");
+            layer.close(index);
+        });
+    }
+
+    var videoPath = "@Model.VideoPath";
+    if (videoPath!="") {
+        var width = 600;
+        var height = 300;
+        $.ajax({
+            type: 'POST',
+            url: '@Html.RootPath()/SiteInfoManagement/GetVideoInfo',
+            data: { 'videoPath': videoPath },
+            dataType: 'json',
+            success: function (res) {
+                width = res.width;
+                height = res.height;
+                $("#PreviewVideo").removeAttr("style");
+                $("#DeleteVideo").removeAttr("style");
+                $("#DeleteVideo").html("删除");
+                $("#PreviewVideo").attr("href", "javascript:Play('" + decodeURIComponent(videoPath) + "','" + width + "','" + height + "')");
+                $("#DeleteVideo").attr("href", "javascript:DeleteVideo('" + decodeURIComponent(videoPath) + "')");
+            },
+            error: function (data) {
+                console.log(data.msg);
+            }
+        });
+    }
+
+</script>

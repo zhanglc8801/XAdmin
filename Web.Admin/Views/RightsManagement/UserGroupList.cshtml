@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "用户组列表";
+}
+<style>
+    .layui-input-block {
+        margin-left: 120px;
+    }
+
+    .layui-form-label {
+        width: 90px;
+    }
+</style>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto" style="height:25px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户组名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="KeyStr" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline" style="vertical-align:baseline;">
+            <button class="layui-btn" lay-submit lay-filter="user-search" style="margin-bottom:7px;">搜索</button>
+        </div>
+    </div>
+</div>
+
+<table class="layui-hide" id="GroupList" lay-filter="GroupList"></table>
+<label style="margin-left:10px; color:darkgray;">用户组功能用于管理处于不同角色下的成员。</label>
+
+@*状态模板*@
+<script type="text/html" id="StatusTpl">
+    <input type="checkbox" name="Status" value="{{d.ID}}" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusDemo" {{ d.Status == 1 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="ToolbarBtn">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="AddGroup">新增用户组</button>
+        <button class="layui-btn layui-btn-sm" lay-event="DeleteGroups">批量删除</button>
+    </div>
+</script>
+
+<script type="text/html" id="ActionBtn">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="AddUser">加入成员</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function () {
+        var $ = layui.$;
+        var form = layui.form;
+        var table = layui.table;
+        //监听搜索
+        form.on('submit(user-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('GroupList', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                where: field
+            });
+        });
+        //监听状态操作
+        form.on('switch(StatusDemo)', function (data) {
+            var status = false;
+            if (data.elem.checked) {
+                status = true;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/RightsManagement/ChangeGroupStatus',
+                data: { 'Int32Key': this.value, 'boolValue': status },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.tips('操作成功', data.othis);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+
+        table.render({
+            elem: '#GroupList'
+            , height: 'auto'
+            , url: '@Html.RootPath()/RightsManagement/GetGroupInfoPageList' //数据接口
+            , toolbar: '#ToolbarBtn'
+            //, page: true //开启分页
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'] //自定义分页布局
+                , groups: 8 //显示 8 个连续页码
+                , prev: '上一页'
+                , next: '下一页'
+            }
+            , limit: 10 //一页能够显示的最大数目
+            , even: true    //隔行换色
+            , skin: 'line ' //表格风格 line （行边框风格）row （列边框风格）nob （无边框风格）
+            , limits: [10, 20,30,50]  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            , method: 'post'  //提交方式
+            , cols: [[ //表头
+                  { type: 'checkbox' }
+                , { field: 'ID', title: 'ID', width: 80, style: 'text-align:center;', sort: true }
+                , { field: 'GroupName', title: '用户组', width: 200, align: 'center', sort: true }
+                , { field: 'Status', title: '状态', width: 100, templet: '#StatusTpl', unresize: true }
+                , {
+                    field: 'Note', title: '描述', width: 350, align: 'center', templet: function (d) {
+                        return '<div style="text-align:left;">' + d.Note + '</div>';
+                    }
+                }
+                , { field: 'AddDate', title: '创建时间', width: 150, align: 'center',sort: true, templet: '<div>{{ layui.util.toDateString(d.AddDate, "yyyy-MM-dd HH:mm") }}</div>' }
+                , { fixed: 'right', title: '操作', toolbar: '#ActionBtn', width: 190, align: 'center' }
+            ]]
+        });
+
+        //头工具栏事件
+        table.on('toolbar(GroupList)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'AddGroup':
+                    layer.open({
+                          type: 2
+                        , title: '新增用户组'
+                        , shadeClose: true //点击遮罩区域是否关闭页面
+                        , shade: 0.8  //遮罩透明度
+                        , content: '/RightsManagement/UserGroupEdit'
+                        , maxmin: true
+                        , area: ['620px', '300px']
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index]
+                                , submitID = 'LayAdmin-group-submit'
+                                , submit = layero.find('iframe').contents().find('#' + submitID);
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                                var field = data.field; //获取提交的字段
+                                //提交 Ajax 成功后，静态更新表格中的数据
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Html.RootPath()/RightsManagement/SaveGroupInfo',
+                                    data: field,
+                                    dataType: 'json',
+                                    success: function (res) {
+                                        if (res.code == "1") {
+                                            layer.msg("操作成功！", { icon: 1, offset: 't' });
+                                            table.reload('GroupList', {}); //数据刷新
+                                        }
+                                    },
+                                    error: function (data) {
+                                        layer.msg(data.msg, { icon: 2, offset: 't' });
+                                    },
+                                });
+                                layer.close(index); //关闭弹层
+                            });
+                            submit.trigger('click');
+                        }
+                    });
+                    break;
+                case 'DeleteGroups':
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择需要删除的用户组！', { icon: 7, offset: 't' });
+                    }
+                    else {
+                        var IdStr = "";
+                        for (var i = 0; i < checkData.length; i++) {
+                            IdStr += checkData[i].ID + ",";
+                        }
+                        layer.confirm('确定要删除选中的用户组？删除后用户组内的成员也将一起移除。', { title:'批量删除用户组', icon: 3 }, function (index) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/RightsManagement/DeleteGroupInfo',
+                                data: { 'KeyStr': IdStr },
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("已删除！", { icon: 1, offset: 't' });
+                                        table.reload('GroupList', {});
+                                    }
+                                    else {
+                                        layer.msg("删除失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                        });
+                    }
+                    break;
+            };
+        });
+        //监听行工具事件
+        table.on('tool(GroupList)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'AddUser') {
+                layer.open({
+                      type: 2
+                    , title: '向用户组添加成员'
+                    , shadeClose: true //点击遮罩区域是否关闭页面
+                    , shade: 0.8  //遮罩透明度
+                    , content: '/RightsManagement/AddUserGroupMember?GroupID=' + data.ID
+                    , maxmin: true
+                    , area: ['900px', '650px']
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var row = window["layui-layer-iframe" + index].callbackdata();
+                        //layer.alert("get:" + row);
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Html.RootPath()/RightsManagement/AddGroupUserAjax',
+                            data: { 'KeyStr': row, 'GroupID': data.ID },
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.code == "1") {
+                                    layer.msg("添加成功！", { icon: 1, offset: 't' });
+                                }
+                                else {
+                                    layer.msg("添加失败！", { icon: 2, offset: 't' });
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data.msg);
+                            },
+                        });
+                        layer.close(index);
+                    }
+                    , btn2: function (index, layero) {
+                        layer.close(index);
+                    }
+                 });
+            }
+            else if (obj.event === 'del') {
+                layer.confirm('确定要删除此用户组吗？删除后此用户组内的成员也将一起移除。', { title:'删除用户组', icon: 3 }, function (index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Html.RootPath()/RightsManagement/DeleteGroupInfo',
+                        data: { 'KeyStr': data.ID },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code == "1") {
+                                layer.msg("已删除！", { icon: 1, offset: 't' });
+                                table.reload('GroupList', {}); //数据刷新
+                                obj.del();
+                            }
+                            else {
+                                layer.msg("删除失败！", { icon: 2, offset: 't' });
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data.msg);
+                        },
+                    });
+                    layer.close(index);
+                });
+            }
+            else if (obj.event === 'edit') {
+                layer.open({
+                      type: 2
+                    , title: '修改用户组信息'
+                    , shadeClose: true //点击遮罩区域是否关闭页面
+                    , shade: 0.8  //遮罩透明度
+                    , content: '/RightsManagement/UserGroupEdit?ID=' + data.ID
+                    , maxmin: true
+                    , area: ['620px', '300px']
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'LayAdmin-group-submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                            var field = data.field; //获取提交的字段
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Html.RootPath()/RightsManagement/SaveGroupInfo',
+                                data: field,
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res.code == "1") {
+                                        layer.msg("操作成功！", { icon: 1,offset:'t' });
+                                        table.reload('GroupList', {}); //数据刷新
+                                    }
+                                    else {
+                                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data.msg);
+                                },
+                            });
+                            layer.close(index); //关闭弹层
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+        });
+    });
+</script>

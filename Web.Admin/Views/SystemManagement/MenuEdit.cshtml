@@ -1,0 +1,168 @@
+﻿@model XAdmin.Model.Entity.Menu
+@{
+    ViewBag.Title = "MenuEdit";
+}
+<style>
+    .ztree {
+        height: 190px;    
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-menuedit" id="layuiadmin-form-menuedit">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单：</label>
+            <div class="layui-input-inline" id="PDIV">
+                <input type="text" id="PMenuID" name="PMenuID" lay-filter="tree" class="layui-input" value="@Model.PMenuID">
+            </div>
+            <div class="layui-input-inline" style="width:90px">
+                <input type="checkbox" name="isroot" id="isroot" lay-skin="primary" lay-filter="lay-isroot" title="一级菜单" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称：</label>
+            <input type="hidden" name="MenuID" value="@Model.MenuID" />
+            <div class="layui-input-inline" style="width:280px;">
+                <input type="text" name="MenuName" lay-verify="required" placeholder="菜单名称" autocomplete="off" class="layui-input" value="@Model.MenuName">
+            </div>
+            <div class="layui-input-inline" style="width:80px;">
+                @{
+                    if (Model.Status == true)
+                    {
+                        <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" checked="checked" lay-filter="StatusChange" value="@Model.Status">
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusChange" value="@Model.Status">
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单图标：</label>
+            <div class="layui-input-inline">
+                <input type="text" id="iconPicker" name="iconPicker" lay-filter="Icon" value="@Model.Icon">
+                <input type="hidden" id="Icon" name="Icon" value="@Model.Icon" />
+                <input type="hidden" id="IconColor" name="IconColor" value="@Model.IconColor" />
+                <div id="IconColorPicker" style="position:absolute;margin-left:100px;margin-top:-39px;" title="设置图标颜色"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号：</label>
+            <div class="layui-input-inline" style="width:138px;">
+                <input type="number" name="SortID" lay-verify="number" placeholder="序号" autocomplete="off" class="layui-input" value="@Model.SortID">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuUrl" placeholder="菜单URL" autocomplete="off" class="layui-input" value="@Model.MenuUrl">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="XAdmin-menu-submit" id="XAdmin-menu-submit" value="确认">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element', 'treeSelect', 'iconPicker','colorpicker','layer'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , iconPicker = layui.iconPicker
+            , colorpicker = layui.colorpicker
+            , treeSelect = layui.treeSelect;
+        treeSelect.render({
+            elem: '#PMenuID',
+            data:'@Html.RootPath()/SystemManagement/MakeTreeSelect',
+            headers: {},
+            type: 'post',
+            placeholder: '输入关键字以查找',
+            search: true,
+            style: {
+                folder: { enable: true },
+                line: { enable: true }
+            },
+            // 点击回调
+            click: function (d) {
+                console.log(d);
+                //alert(d.current.id);
+                $("#PMenuID").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+                console.log(d);
+                //选中节点，根据id筛选
+                treeSelect.checkNode('tree', '@Model.PMenuID');
+                //console.log($('#PMenuID').val());
+                // 获取zTree对象，可以调用zTree方法
+                //var treeObj = treeSelect.zTree('tree');
+                //console.log(treeObj);
+                //刷新树结构
+                treeSelect.refresh('tree');
+            }
+        });
+
+        iconPicker.render({
+            // 选择器，推荐使用input
+            elem: '#iconPicker',
+            // 数据类型：fontClass/unicode
+            type: 'unicode',
+            // 是否开启搜索：true/false，默认true
+            search: false,
+            // 是否开启分页：true/false，默认true
+            page: true,
+            // 每页显示数量，默认12
+            limit: 16,
+            // 点击回调
+            click: function (data) {
+                //console.log(data);
+                //$("#Icon").val(encodeURI(data.icon));
+                //$("#iconPicker").val(decodeURI(data.icon));
+
+                $("#Icon").val(data.icon);
+                $("#iconPicker").val(data.icon);
+
+            },
+            // 渲染成功后的回调
+            success: function (d) {
+                //console.log(d);
+                //$("#Icon").val('@Model.Icon');
+                $(".layui-iconpicker-icon").attr("style","color:@Model.IconColor");
+            }
+        });
+
+        colorpicker.render({
+            elem: '#IconColorPicker' //绑定元素
+            , color:'@Model.IconColor' //默认颜色
+            , change: function (color) { //颜色改变的回调
+                $("#IconColor").val(color);
+                $(".layui-iconpicker-icon").attr("style", "color:" + color);
+            }
+        });
+
+        if ('@Model.PMenuID' == '0') {
+            $("#isroot").attr("checked", "checked");
+            $("#PDIV").attr("style", "display:none");
+            form.render();
+        }
+
+        form.on('checkbox(lay-isroot)', function (data) {
+            if (data.elem.checked) {
+                $("#PDIV").attr("style", "display:none");
+            }
+            else {
+                $("#PDIV").attr("style", "display:inline;width:250px;");
+            }
+        });
+
+    })
+</script>

@@ -1,0 +1,513 @@
+﻿@model XAdmin.Model.CustomEntity.UserModel
+@{
+    ViewBag.Title = "UserEdit";
+}
+<style>
+    .layui-form-select dl {
+        max-height: 200px;
+    }
+    .RoleBtn {
+        padding:3px;
+        padding-left:6px;
+        padding-right:6px;
+        margin-left:5px;
+    }
+    .c1 {
+        width: 35px;
+        height: 35px;
+        border: 0px solid transparent;
+        border-radius: 50%;
+        overflow: hidden;
+        line-height: normal;
+        margin-top: 3px;
+        margin-left:-15px;
+    }
+    
+</style>
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本信息</li>
+            <li>扩展信息</li>
+        </ul>
+        <div class="layui-tab-content" style="overflow-y:scroll; height:400px;">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <input type="hidden" name="ID" value="@Model.ID" />
+                    <input type="hidden" name="UserType" value="@Model.UserType" />
+                    <div class="layui-input-inline input">
+                        <input type="text" name="UserName" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" value="@Model.UserName">
+                    </div>
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="Pwd" placeholder="不修改则留空(最大18位)" autocomplete="off" class="layui-input" maxlength="18" value="">
+                    </div>
+                    
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="RealName" lay-verify="required" placeholder="请输入真实姓名" autocomplete="off" class="layui-input" value="@Model.RealName">
+                    </div>
+                   
+                    <label class="layui-form-label">手机号码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Mobile" lay-verify="phone" placeholder="请输入号码" autocomplete="off" class="layui-input" value="@Model.Mobile">
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="EMail" placeholder="请输入邮箱" autocomplete="off" class="layui-input" value="@Model.EMail">
+                    </div>
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline" style="width:150px;">
+                        @{
+                            if (Model.Gender == 1)
+                            {
+                                <input type="radio" name="Gender" value="1" title="男" checked>
+                                <input type="radio" name="Gender" value="2" title="女">
+                            }
+                            else if (Model.Gender == 2)
+                            {
+                                <input type="radio" name="Gender" value="1" title="男">
+                                <input type="radio" name="Gender" value="2" title="女" checked>
+                            }
+                            else
+                            {
+                                <input type="radio" name="Gender" value="1" title="男">
+                                <input type="radio" name="Gender" value="2" title="女">
+                            }
+                        }
+                    </div>
+                    <div class="layui-input-inline" style="width:120px;">
+                        <div class="c1">
+                            <img id="PhotoImg" title="头像预览" src="@Model.Photo" style="width:100%;" />
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="layui-form-item" style="display:none;">
+                    <label class="layui-form-label">用户状态</label>
+                    @{
+                        if (Model.Status == 1)
+                        {
+                            <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" checked="checked" lay-filter="StatusChange" value="@Model.Status">
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="Status" lay-skin="switch" lay-text="正常|已禁用" lay-filter="StatusChange" value="@Model.Status">
+                        }
+                    }
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="Remark" id="Remark" placeholder="请输入内容" class="layui-textarea">@Model.Remark</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">权限</label>
+                    <table style="border-collapse:separate;border-spacing:0px 5px;">
+                        <tbody id="OldRoleBody">
+                            @{
+                                if (Model.ID > 0 && Model.RoleUserList.Count > 0)
+                                {
+                                    for (int i = 0; i < ViewBag.RoleUserList.Count; i++)
+                                    {
+                                        <tr id="Role_@i">
+                                            <td>
+                                                <select name="SetRole">
+                                                    <option value="0">选择角色</option>
+                                                    @{
+                                                        foreach (XAdmin.Model.Entity.RoleInfo info in ViewBag.RoleList)
+                                                        {
+                                                            if (ViewBag.RoleUserList[i].RoleID == info.ID)
+                                                            {
+                                                                <option value="@info.ID" selected="selected">@info.RoleName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@info.ID">@info.RoleName</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (i == 0)
+                                                    {
+                                                        <input type="button" class="RoleBtn" value="新增" onclick="AddRole()" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="button" class="RoleBtn" value="删除" onclick="DelRole('Role_@i')" />
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            <select name="SetRole">
+                                                <option value="0">选择角色</option>
+                                                @{
+                                                    foreach (XAdmin.Model.Entity.RoleInfo info in ViewBag.RoleList)
+                                                    {
+                                                        <option value="@info.ID">@info.RoleName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="button" class="RoleBtn" value="新增" onclick="AddRole()" />
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tbody id="AddRoleBody">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="layui-tab-item">
+                @*用户扩展信息*@
+                <input type="hidden" name="PKID" value="@Model.PKID" />
+                <input type="hidden" name="SiteID" value="@Model.SiteID" />
+                <input type="hidden" name="UserID" value="@Model.ID" />
+                <div class="layui-form-item" id="area-picker">
+                    <label class="layui-form-label">所在地区</label>
+                    <input type="hidden" id="AreaID" name="AreaID" value="@Model.AreaID" />
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <select name="Province" id="Province" class="province-selector" data-value="" lay-filter="Province"></select>
+                    </div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <select name="City" id="City" class="city-selector" data-value="" lay-filter="City"></select>
+                    </div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <select name="County" id="County" class="county-selector" data-value="" lay-filter="County"></select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Address" autocomplete="off" class="layui-input" value="@Model.Address" style="width:410px;">
+                    </div>
+                    <label class="layui-form-label" style="margin-left:150px;">邮编</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ZipCode" autocomplete="off" class="layui-input" value="@Model.ZipCode" style="width:158px;">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工作单位</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="WorkUnit" autocomplete="off" class="layui-input" value="@Model.WorkUnit" style="width:220px;">
+                    </div>
+                    <label class="layui-form-label" style="width:30px; padding-left:0px; margin-left:30px;">电话</label>
+                    <div class="layui-input-inline" style="width:135px;">
+                        <input type="text" name="Tel" autocomplete="off" class="layui-input" value="@Model.Tel" style="width:135px;">
+                    </div>
+                    <label class="layui-form-label" style="width:30px; padding-left:0px; margin-left:-5px;">传真</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Fox" autocomplete="off" class="layui-input" value="@Model.Fox" style="width:158px;">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">证件类型</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <select name="IDType" id="IDType" lay-filter="aihao">
+                            <option value="">请选择</option>
+                            <option value="1">身份证</option>
+                            <option value="2">军官证</option>
+                            <option value="3">护照</option>
+                            <option value="4" selected="selected">其他</option>
+                        </select>
+                        <script>
+                            document.getElementById("IDType").value = "@Model.IDType";
+                        </script>
+                    </div>
+                    <label class="layui-form-label">证件号码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="IDNo" autocomplete="off" class="layui-input" value="@Model.IDNo" style="width:258px;">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">民族</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <select id="Nation" name="Nation" lay-filter="aihao"><option value="">请选择</option></select>
+                    </div>
+                    <label class="layui-form-label">出生日期</label>
+                    <div class="layui-input-inline">
+                        @{
+                            if (Model.Birthday == null)
+                            {
+                                <input type="text" name="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" value="" class="layui-input" style="width:258px;">
+                            }
+                            else
+                            {
+                                <input type="text" name="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" value="@Model.Birthday.Value.ToString("yyyy-MM-dd")" class="layui-input" style="width:258px;">
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学历</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <select name="Education" id="Education" lay-filter="aihao">
+                            <option value="">请选择</option>
+                            <option value="1">专科</option>
+                            <option value="2">本科</option>
+                            <option value="3">研究生</option>
+                            <option value="3">硕士</option>
+                            <option value="3">博士</option>
+                            <option value="3">博士后</option>
+                        </select>
+                        <script>
+                            document.getElementById("Education").value = "@Model.Education";
+                        </script>
+                    </div>
+                    <label class="layui-form-label">毕业院校</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="University" autocomplete="off" class="layui-input" value="@Model.University" style="width:258px;">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">专业</label>
+                    <div class="layui-input-inline" style="width:240px;">
+                        <input type="text" name="Professional" autocomplete="off" class="layui-input" value="@Model.Professional" style="width:240px;">
+                    </div>
+                    <label class="layui-form-label">职称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="JobTitle" autocomplete="off" class="layui-input" value="@Model.JobTitle" style="width:258px;">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-hide">
+                <input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    layui.config({
+        base: '../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element','laydate'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , laydate = layui.laydate
+            , laynation = layui.laynation;
+
+        //出生日期
+        laydate.render({
+            elem: '#Birthday',
+            trigger: 'click'//呼出事件改成click
+        });
+
+        //监听指定开关
+        form.on('switch(StatusChange)', function (data) {
+            this.value = this.checked == true ? '1' : '0';
+        });
+
+        function InitProvince(SetValue) {
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetProvinceList",
+                data: { "ParentID": "1","ProvinceID":"0" },
+                async: true,
+                success: function (data) {
+                    $.each(data.data, function (index, item) {
+                        $('#Province').append(new Option(item.AreaName, item.ID));
+                    });
+                    $('#Province').find("option[value='" + SetValue + "']").attr("selected", true);
+                    form.render('select');
+                }
+            });
+        }
+
+        function InitCity(parentID, SetValue) {
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetAreaListByParentID",
+                data: { "ParentID": parentID },
+                async: true,
+                success: function (data) {
+                    $.each(data.data, function (index, item) {
+                        $('#City').append(new Option(item.AreaName, item.ID));
+                    });
+                    $('#City').find("option[value='" + SetValue + "']").attr("selected", true);
+                    form.render('select');
+                }
+            });
+        }
+
+        function InitCounty(parentID,SetValue) {
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetAreaListByParentID",
+                data: { "ParentID": parentID },
+                async: true,
+                success: function (data) {
+                    $.each(data.data, function (index, item) {
+                        $('#County').append(new Option(item.AreaName, item.ID));
+                    });
+                    $('#County').find("option[value='" + SetValue + "']").attr("selected", true);
+                    form.render('select');
+                }
+            });
+        }
+
+        SetArea();
+        function SetArea() {
+            var id = "@Model.AreaID";
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetAreaModel",
+                data: { "ID": id },
+                async: true,
+                success: function (data) {
+                    if (data.code == "1") {
+                        if (data.data.AreaLevel == "3") {
+                            InitCounty(data.data.ParentID, data.data.ID);
+                            $.ajax({
+                                type: "POST",
+                                url: "@Html.RootPath()/Common/GetAreaModel",
+                                data: { "ID": data.data.ParentID },
+                                async: true,
+                                success: function (res) {
+                                    InitCity(res.data.ParentID, res.data.ID);
+                                    InitProvince(res.data.ParentID);
+                                }
+                            });
+                        }
+                        else if (data.data.AreaLevel == "2") {
+                            InitCity(data.data.ParentID, data.data.ID);
+                            InitProvince(data.data.ParentID);
+                        }
+                        else if (data.data.AreaLevel == "1" || data.data.AreaLevel == "0") {
+                            InitProvince(data.data.ID);
+                        }
+                    }
+                }
+            });
+        }
+
+        form.on('select(Province)', function (data) {
+            if (data.value == "1") {
+                $("#City").empty();
+                $("#County").empty();
+                $("#AreaID").val(data.value);
+                form.render('select');
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetAreaListByParentID",
+                data: { "ParentID": data.value},
+                async: true,
+                success: function (res) {
+                    $("#City").empty();
+                    $("#County").empty();
+                    $("#AreaID").val(data.value);
+                    $('#City').append(new Option("请选择市/区", data.value));
+                    $.each(res.data, function (index, item) {
+                        $('#City').append(new Option(item.AreaName, item.ID));
+                    });
+                    form.render('select');
+                }
+            });
+        });
+
+        form.on('select(City)', function (data) {
+            $("#AreaID").val(data.value);
+            $.ajax({
+                type: "POST",
+                url: "@Html.RootPath()/Common/GetAreaListByParentID",
+                data: { "ParentID": data.value},
+                async: true,
+                success: function (res) {
+                    $("#County").empty();
+                    $('#County').append(new Option("请选择县/区", data.value));
+                    $.each(res.data, function (index, item) {
+                        $('#County').append(new Option(item.AreaName, item.ID));
+                    });
+                    form.render('select');
+                }
+            });
+        });
+
+        form.on('select(County)', function (data) {
+            $("#AreaID").val(data.value);
+        });
+
+
+
+
+    });
+</script>
+
+<script type="text/javascript">
+    var nations = ["汉族", "蒙古族", "回族", "藏族", "维吾尔族", "苗族", "彝族", "壮族", "布依族", "朝鲜族", "满族", "侗族", "瑶族", "白族",
+        "土家族", "哈尼族", "哈萨克族", "傣族", "黎族", "傈僳族", "佤族", "畲族", "高山族", "拉祜族", "水族", "东乡族", "纳西族", "景颇族", "柯尔克孜族", "土族",
+        "达斡尔族", "仫佬族", "羌族", "布朗族", "撒拉族", "毛南族", "仡佬族", "锡伯族", "阿昌族", "普米族", "塔吉克族", "怒族", "乌孜别克族", "俄罗斯族", "鄂温克族",
+        "德昂族", "保安族", "裕固族", "京族", "塔塔尔族", "独龙族", "鄂伦春族", "赫哲族", "门巴族", "珞巴族", "基诺族", "其他"];
+    var option = "";
+    for (var i = 0; i <
+        nations.length; i++) {
+        option += '<option value="' + (i + 1) + '">' + nations[i] + '</option>';
+    }
+    $(option).appendTo("#Nation");
+    document.getElementById("Nation").value = "@Model.Nation";
+</script>
+<script>
+    function renderForm() {//重新渲染form
+        layui.use('form', function () {
+            var form = layui.form;//高版本建议把括号去掉，有的低版本，需要加()
+            form.render('select');
+        });
+    }
+    function AddRole() {
+        var str = "";
+        var Count = $("#AddRoleBody tr").length;
+        var OldCount = $("#OldRoleBody tr").length;
+        if ((Count + OldCount) > 4) {
+            layer.alert("每个用户最多允许设置5个角色！");
+            return;
+        }
+        str += '<tr id="Role_' + (Count + OldCount)+ '" style="margin-top:5px;"><td>';
+        str += '<select name="SetRole" class="layui-input" data-value="">';
+        str += '<option value="0">选择角色</option>';
+        var list =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RoleList));
+        for (var i = 0; i < list.length; i++) {
+            str += '<option value="' + list[i].ID + '">' + list[i].RoleName + '</option>';
+        }
+        str += '</select></td>';
+        str += '<td><input type="button" class="RoleBtn" value="删除" onclick="DelRole(\'Role_' + (Count + OldCount)+ '\')" /></td></tr>';
+        $("#AddRoleBody").append(str);
+        renderForm(); 
+    }
+    function DelRole(obj) {
+        $("#" + obj).remove();
+        renderForm();
+    }
+</script>
+

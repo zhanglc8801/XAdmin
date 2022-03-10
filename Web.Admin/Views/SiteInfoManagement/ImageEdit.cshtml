@@ -1,0 +1,423 @@
+﻿@model XAdmin.Model.Entity.SiteChannel_ImageContent
+@{
+    ViewBag.Title = "图片类内容新增/修改页";
+}
+<link href="~/WebUploader/webuploader.css" rel="stylesheet" />
+<link href="~/WebUploader/style.css" rel="stylesheet" />
+<div class="layui-form" lay-filter="layuiadmin-form-ImageEdit" id="layuiadmin-form-ImageEdit">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <div class="layui-tab-item layui-show">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片上传：</label>
+                <div class="layui-input-inline">
+                    <button type="button" id="UpTitPhoto" class="layui-btn layui-btn-danger" style="padding:5px 8px 5px 8px;height:28px; line-height:3px; margin-top:5px;"><i class="layui-icon"></i>选择图片</button>
+                    <input id="ImagePath" name="ImagePath" type="hidden" value="@Model.ImagePath" />
+                    <a id="PreviewImg" href="javascript:void(0)" style="display:none;">查看原图</a>
+                    <a id="DeleteImg" href="javascript:void(0)" style="display:none;">删除</a>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="height:200px;">
+                <div class="layui-input-inline" style=" width:99%;">
+                    <div style="width:600px; height:234px; float:left; border:0px solid red;">
+                        <label class="layui-form-label">图片标题：</label>
+                        <input type="hidden" name="ID" value="@Model.ID" />
+                        <input type="hidden" name="ChannelID" value="@Model.ChannelID" />
+                        <div class="layui-input-inline input" style="width:350px;">
+                            <input type="text" name="Title" lay-verify="required" placeholder="图片标题" autocomplete="off" class="layui-input" value="@Model.Title">
+                        </div>
+                        <div class="layui-input-inline" style="width:80px; margin-right:0px;">
+                            @{
+                                if (Model.Status == true || Model.Status == null)
+                                {
+                                    <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" checked="checked" lay-filter="StatusChange">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="Status" name="Status" lay-skin="switch" lay-text="正常|已停用" lay-filter="StatusChange">
+                                }
+                            }
+                        </div>
+                        <div class="layui-form-item"></div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">外部链接：</label>
+                            <div class="layui-input-inline">
+                                <div class="layui-input-inline" style="width:350px;">
+                                    <input type="text" name="LinkUrl" placeholder="点击时将跳转到此链接地址" autocomplete="off" class="layui-input" value="@Model.LinkUrl">
+                                </div>
+                                @{
+                                    if (Model.Target != null && Model.Target.Value)
+                                    {
+                                        <div style="display:inline; position:absolute;"><input type="checkbox" name="Target" title="新窗口打开" checked /></div>
+                                    }
+                                    else
+                                    {
+                                        <div style="display:inline;position:absolute;"><input type="checkbox" name="Target" title="新窗口打开" /></div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">来源：</label>
+                            <div class="layui-input-inline input" style="width:280px;">
+                                <input type="text" name="Source" placeholder="来源" autocomplete="off" class="layui-input" value="@Model.Source">
+                            </div>
+                            <label class="layui-form-label" style="padding-left:0px; width:50px;">作者：</label>
+                            <div class="layui-input-inline input" style="width:123px;">
+                                <input type="text" name="Author" placeholder="作者" autocomplete="off" class="layui-input" value="@Model.Author">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">摘要：</label>
+                            <div class="layui-input-block" style="width:482px; height:100px;">
+                                <textarea name="Abstruct" id="Abstruct" placeholder="摘要" class="layui-textarea layext-text-tool" maxlength="1000" style="width:99%;min-height:10px;">@Model.Abstruct</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:right;width:200px; height:200px;line-height:200px; border:1px solid gray; margin-left:10px;">
+                        <img id="imgview" src="@Model.ImagePath" style="height:auto;width:100%; max-height:100%;max-width:100%" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">内容：</label>
+                <div class="layui-input-block">
+                    <textarea name="Content" id="Content" placeholder="内容" class="layui-textarea layext-text-tool" style="width:99%; max-height:60px;">@Model.Content</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">附件：</label>
+                <div class="layui-input-inline">
+                    <div id="container">
+                        <div id="uploader">
+                            <div class="queueList" style="width:680px;">
+                                <div id="filePicker"></div>
+                                <div id="filePicker2"></div><div class="uploadBtn" style="margin-left:0px; display:none;">开始上传</div>
+                            </div>
+                            <div>
+                                <img src="~/WebUploader/Delete.gif" title="删除" class="delete" style="display:none; cursor:pointer; position:absolute; top:8px; left:413px;" />
+                            </div>
+                            <div class="statusBar" style="display:none;">
+                                <div class="progress">
+                                    <span class="text">0%</span>
+                                    <span class="percentage" style="display:none;"></span>
+                                </div>
+                                <div class="info"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a id="DownloadFile" href="javascript:void(0)" style="position:relative; left:85px; bottom:25px; display: none;">下载</a>
+                    <a id="DeleteFile" href="javascript:void(0)" style="position: relative; left:95px; bottom: 25px; display: none;">删除</a>
+                    <input id="FilePath" name="FilePath" type="hidden" value="@Model.FilePath" />
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;">
+                <button type="button" class="layui-btn" lay-submit lay-filter="XAdmin-Image-Submit">
+                    <span class="layui-icon layui-icon-add-1"></span>提交
+                </button>
+                <button type="button" class="layui-btn layui-btn-danger" onclick="formClose()">
+                    <span class="layui-icon layui-icon-close"></span>关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/WebUploader/jquery.js"></script>
+<script src="~/WebUploader/webuploader-v0.1.6.js"></script>
+<script src="~/WebUploader/upload.js"></script>
+
+<script type="text/javascript">
+    window.Global = window.Global || {};
+    Global.FileQueueds = [];
+    Global.GetFileQueued = function (id) {
+        var res = [];
+        $.each(Global.FileQueueds, function (idx, row) {
+            if (row.id == id) {
+                res = row;
+            }
+        })
+        return res;
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+        var _chunk = 0;
+        WebUploader.Uploader.register({
+            "before-send-file": "beforeSendFile",
+            "before-send": "beforeSend",
+            "after-send-file": "afterSendFile"
+        }, {
+            beforeSendFile: function (file) {
+                //console.info('beforeSendFile', Global.FileQueueds, file);
+                $.each(Global.FileQueueds, function (idx, row) {
+                    if (row.id == file.id) {
+                        _chunk = row.chunk;
+                    }
+                });
+            },
+            beforeSend: function (block) {
+                var blob = block.blob.getSource(),
+                    deferred = $.Deferred();
+                //console.info('blob', block);
+                //根据md5与服务端匹配，如果重复，则跳过。 webuploader-v0.1.6.js Line:3375 CuteFile
+                if (block.chunk < _chunk) {
+                    deferred.reject();
+                }
+                else {
+                    deferred.resolve();
+                }
+                return deferred.promise();
+            },
+            afterSendFile: function (file) {
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    //这是选择完文件后等待上传时的回调事件
+    function QueuedSuccessCallback() {
+        $("#DeleteFile").css("display", "none");
+        $("#DownloadFile").css("display", "none");
+    }
+    //这是上传文件成功后(文件已合并)的回调事件
+    function UploadSuccessCallback(file, md5, savePath, virtualPath) {
+        console.info('UploadSuccessCallback', file);
+        var data = {
+            Name: file.name,
+            Size: file.size,
+            Extension: file.ext
+        };
+        $.ajax({
+            url: '/FileHandle/AddUploadRecord',
+            type: 'post',
+            data: { fileName: data.Name, fileSize: data.Size, fileExt: data.Extension, fileMd5: md5, filePath: decodeURIComponent(savePath), virtualPath: decodeURIComponent(virtualPath) },
+            dataType: 'json',
+            success: function (res) {
+                if (res.code < 0) {
+                    alert(res.errmsg);
+                }
+                else {
+                    $("#Title").val(data.Name);
+                    $("#FilePath").val(decodeURIComponent(virtualPath));
+                    $('.pop-window0 .pop-close').click();
+                }
+            }
+        });
+    };
+</script>
+
+<script type="text/javascript">
+    layui.config({
+        base: '../layuiadmin/'
+    }).extend({
+        index: 'lib/index', textool: 'textool/textool.min', tinymce: 'tinymce/tinymce'
+    }).use(['index', 'form', 'element', 'upload', 'textool', 'tinymce'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , element = layui.element
+            , upload = layui.upload
+            , textool = layui.textool
+            , tinymce = layui.tinymce;
+        form.on('submit(XAdmin-Image-Submit)', function (data) {
+            var field = data.field;
+            if (field.Status == "on") { field.Status = true; } else { field.Status = false; }
+            if (field.Target == "on") { field.Target = true; } else { field.Target = false; }
+            field.Content = edit.getContent();
+            $.ajax({
+                type: 'POST',
+                url: '@Html.RootPath()/SiteInfoManagement/SaveImageInfoAjax',
+                data: field,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.msg(res.msg, { icon: 1, offset: 't' });
+                        //在父窗口里得到当前iframe层的索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //再执行关闭
+                        parent.layer.close(index);
+                        parent.layui.table.reload('ImgList');
+                        parent.layer.msg(res.msg, { icon: 1, offset: 't' });
+                    }
+                    else {
+                        layer.msg("操作失败！", { icon: 2, offset: 't' });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                }
+            });
+        });
+
+        window.formClose = function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+
+        upload.render({
+            elem: '#UpTitPhoto'
+            , url: '/FileHandle/UpTitlePhoto'
+            , size: 4096 //限制文件大小，单位 KB
+            , done: function (res) {
+                layer.msg('上传成功');
+                $("#PreviewImg").removeAttr("style");
+                $("#DeleteImg").removeAttr("style");
+                $("#DeleteImg").html("删除");
+                $("#imgview").attr("src", res.data);
+                $("#PreviewImg").attr("href", "javascript:ShowImg('" + res.data + "','" + res.width + "','" + res.height + "')");
+                $("#DeleteImg").attr("href", "javascript:DeleteImg('" + res.data + "')");
+                $("#ImagePath").val(res.data);
+                //console.log(res)
+            }
+        });
+
+        textool.init({
+            eleId: 'Abstruct',
+            tools: ['count', 'copy', 'clear'],
+            tipType: 'laytips',
+            tipColor: '#01AAED',
+            zIndex: 1000
+        });
+
+        var edit = tinymce.render({
+            elem: "#Content"
+            , height: 335
+            , images_upload_url: '@Html.RootPath()/FileHandle/TinymceUpImage'
+            // ...
+            // 其余配置可参考官方文档 https://fly.layui.com/extend/textool/#doc
+
+        }, function (opt) {
+            //加载完成后回调
+        });
+
+        tinymce.init({
+            selector: '#Content',
+            plugins: "code image axupimgs",
+            toolbar: "code axupimgs",
+            images_upload_base_path: '/demo',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '/FileHandle/TinymceUpImage');
+                xhr.onload = function () {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name);
+                xhr.send(formData);
+            }
+        });
+
+    });
+
+    function ShowImg(src, width, height) {
+        if (width > 1000) {
+            width = width / 2;
+            height = height / 2;
+        }
+        if (width < 50) {
+            width = width * 2;
+            height = height * 2;
+        }
+        //检查图片是否存在
+        $.ajax({
+            type: 'POST',
+            url: '@Html.RootPath()/FileHandle/Exists',
+            data: { 'filePath': src },
+            dataType: 'json',
+            success: function (res) {
+                if (res.data == "1") {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 1,
+                        shadeClose: true,
+                        area: [width + 'px', height + 'px'], //宽高
+                        content: "<img width='" + width + "' height='" + height + "'controls=\"controls\" src=" + src + " />"
+                    });
+                }
+                else {
+                    layer.msg("操作失败！查看的图片不存在。", { icon: 2, offset: 't' });
+                }
+            },
+            error: function (data) {
+                console.log(data.msg);
+            },
+        });
+    }
+
+    function DeleteImg(src) {
+        layer.confirm('确定要删除此图片吗？', { icon: 3 }, function (index) {
+            $("#ImagePath").val("");
+            $("#imgview").attr("src","");
+            $("#PreviewImg").attr("style", "display:none;");
+            $("#DeleteImg").removeAttr("href");
+            $("#DeleteImg").html("已删除");
+            layer.close(index);
+        });
+    }
+
+    var titlePhoto = "@Model.ImagePath";
+    if (titlePhoto!="") {
+        var width = 600;
+        var height = 300;
+        $.ajax({
+            type: 'POST',
+            url: '@Html.RootPath()/FileHandle/GetImageSize',
+            data: { 'filePath': titlePhoto },
+            dataType: 'json',
+            success: function (res) {
+                width = res.width;
+                height = res.height;
+                $("#PreviewImg").removeAttr("style");
+                $("#DeleteImg").removeAttr("style");
+                $("#DeleteImg").html("删除");
+                $("#PreviewImg").attr("href", "javascript:ShowImg('" + titlePhoto + "','" + width + "','" + height + "')");
+                $("#DeleteImg").attr("href", "javascript:DeleteImg('" + titlePhoto + "')");
+            },
+            error: function (data) {
+                console.log(data.msg);
+            }
+        });
+    }
+
+    var filePath = "@Model.FilePath";
+    filePath = decodeURIComponent(filePath);
+    if (filePath != "") {
+        $("#DeleteFile").css("display","inline");
+        $("#DeleteFile").attr("href", "javascript:DeleteFile('" + filePath + "')");
+
+        $("#DownloadFile").css("display", "inline");
+        $("#DownloadFile").attr("href", "/FileHandle/DownloadFile?filePath=" + filePath + "");
+    }
+
+    function DeleteFile(path) {
+        layer.confirm('确定要删除此附件吗？', { icon: 3 }, function (index) {
+            $("#FilePath").val("");
+            $("#DeleteFile").html("已删除");
+            layer.close(index);
+        });
+    }
+
+</script>
